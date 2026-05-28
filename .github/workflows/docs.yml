@@ -1,0 +1,19 @@
+name: docs
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check public-spec hygiene
+        run: |
+          if grep -R -n -E 'T42|t42|ProofDAG|proofdag|opentalon|OpenTalon|\.opentalon|src/opentalon' docs examples README.md CHANGELOG.md CONTRIBUTING.md GOVERNANCE.md; then
+            exit 1
+          fi
+      - name: Check examples exist
+        run: test "$(find examples -name '*.xml' | wc -l)" -gt 0
+
