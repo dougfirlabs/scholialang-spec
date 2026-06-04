@@ -1,10 +1,22 @@
-# Scholia v0.4 — Specification (SUPERSEDED)
+# Scholia v0.4 — Specification (LEGACY)
 
-> **Superseded:** Scholia v0.5 is now canonical. Use
-> [`SCHOLIA_v0.5_SPEC.md`](SCHOLIA_v0.5_SPEC.md) for current atom kinds,
-> operators, validator rules, and migration guidance. The historical v0.4
-> draft with the full supersession banner is preserved at
-> [`legacy/SCHOLIA_v0.4_SPEC.md`](legacy/SCHOLIA_v0.4_SPEC.md).
+> **⚠️ SUPERSEDED — see [`SCHOLIA_v0.5_SPEC.md`](../SCHOLIA_v0.5_SPEC.md) for current canonical.**
+>
+> This document is preserved unchanged below as a historical record.
+> It was the v0.4 draft (cut 2026-05-22) before the v0.5 substrate
+> rebuild reconciled the spec across the four Doug Fir Labs repos.
+> Do **not** consult this doc for current Scholia atom kinds, operator
+> set, or validator rules; the v0.5 spec doc is the source of truth.
+>
+> For migration from v0.4 trace shape to v0.5, see
+> [`v04-to-v05-migration.md`](../v04-to-v05-migration.md).
+>
+> The v0.4 draft notably named a closed set of 6 atoms (Step, Goal,
+> Observation, Hypothesis, Finding, Concluding) when the reference
+> implementation in fact had 31 atoms. The 2026-06-04 drift audit
+> exposed this gap; the v0.5 reconciliation closes it. Future readers
+> tracing why something differs between this doc and current Scholia
+> should consult the drift audit and the v0.5 spec.
 
 ---
 
@@ -19,7 +31,7 @@
 
 ## Why v0.4 exists
 
-Codex's read-only analysis of a production backend Atlas sweep (preserved at `docs/reports/2026-05-22-codex-atlas-token-analysis.md`) named eight enhancements that would graduate Scholia from "excellent for orientation and triage" to "operationally sufficient for precise refactors":
+Codex's read-only analysis of the t42 backend Atlas sweep (preserved at `docs/reports/2026-05-22-codex-atlas-token-analysis.md`) named eight enhancements that would graduate Scholia from "excellent for orientation and triage" to "operationally sufficient for precise refactors":
 
 1. Stable atom IDs that survive regeneration
 2. Exported symbols with line spans
@@ -60,7 +72,7 @@ These collectively define Scholia v0.4. v0.3.x stays **intentionally minimal** �
 The order is **strictly enforced** because v0.4 atoms produced before v0.3.1 ships would be unreadable by current consumers.
 
 ```
-Today: Scholia v0.3 (shipped — 1,529 atoms validated in production sweep)
+Today: Scholia v0.3 (shipped — 1,529 atoms validated in t42 sweep)
    │
    ↓
 v0.3.1: minimal-but-extensible primitive hooks
