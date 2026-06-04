@@ -9,8 +9,12 @@ and portable across tools.
 
 ## Contents
 
-- `docs/scholia/` - versioned Scholia v0.3.1 and v0.4 specification docs
-- `docs/notation/` - notation reference, extensions, and policy docs
+- `docs/scholia/SCHOLIA_v0.5_SPEC.md` - canonical Scholia v0.5 spec
+- `docs/scholia/v04-to-v05-migration.md` - migration notes for emitters,
+  validators, and consumers
+- `reference/atom-card-v0.5.md` - one-page v0.5 atom catalog
+- `reference/notation-reference.md` - generated per-atom reference
+- `docs/notation/` - earlier notation reference, extensions, and policy docs
 - `examples/` - fixture traces used by reference implementations
 
 ## Related Repositories
@@ -22,5 +26,8 @@ and portable across tools.
 
 ## Version
 
-Current language version: `v0.4.0`.
+Current language version: `v0.5.0`.
 
+`docs/scholia/SCHOLIA_v0.4_SPEC.md` is superseded. The historical v0.4
+draft is preserved with a banner at
+`docs/scholia/legacy/SCHOLIA_v0.4_SPEC.md`.
