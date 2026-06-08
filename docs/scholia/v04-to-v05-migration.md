@@ -2,8 +2,8 @@
 
 **Audience:** consumers of pre-v0.5 traces (validators, dashboards,
 enrichers), maintainers of emitters that produce `<Finding>` /
-`<Concluding>` atoms, and authors of the OpenTalon / scholialang-mcp
-runtime mirrors.
+`<Concluding>` atoms, and authors of runtime mirrors such as
+`scholialang-mcp`.
 
 **Target reading time:** ~10 minutes.
 
@@ -98,8 +98,7 @@ triggers zero new rules.
 The full rule definitions live in §4.2 of the canonical spec.
 
 **Migration for vendored validators** (e.g. `scholialang-mcp`'s
-vendored validator, OpenTalon's mirror at
-`src/opentalon/scholia/validator.py`):
+vendored validator and private product mirrors):
 
 - Add the 6 rule implementations following
   `scholialang/src/scholialang/validator.py` as the reference.
@@ -182,7 +181,7 @@ For a typical consumer that has v0.4 emitters in production:
    is in the atom card.
 5. **Vendor / sync the v0.5 validator** wherever you have a copy.
    Reference: `scholialang/src/scholialang/validator.py`. Validators
-   in `scholialang-mcp` and OpenTalon need coordinated ports.
+   in `scholialang-mcp` and private product mirrors need coordinated ports.
 6. **Run the test corpus** against your trace fixtures. Expected
    behavior: zero new errors for v0.4-shaped fixtures; new errors only
    on fresh v0.5 fixtures that exercise the new rules.
@@ -246,8 +245,7 @@ exactly one active Concluding.
 - **Canonical spec:** [`SCHOLIA_v0.5_SPEC.md`](SCHOLIA_v0.5_SPEC.md).
 - **Drift audit** (origin of this migration): see the 2026-06-04
   drift audit; it identified the 12 gaps this v0.5 release closes.
-- **PRD bundle:** the `rsi-scholia-v0.5-*` PRDs in OpenTalon's
-  `.ralph/rsi/` directory — PRD-01 added Concluding, PRD-02 added the
-  six validator rules, PRD-03 reconciled the spec docs (this guide is
-  part of PRD-03).
+- **PRD bundle:** the `rsi-scholia-v0.5-*` PRDs in the private planning
+  archive — PRD-01 added Concluding, PRD-02 added the six validator rules,
+  PRD-03 reconciled the spec docs (this guide is part of PRD-03).
 - **Reference impl:** `scholialang/src/scholialang/{atoms,validator}.py`.

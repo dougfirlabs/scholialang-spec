@@ -3,7 +3,7 @@
 **Status:** CANONICAL (v0.6 content-addressable-substrate release — supersedes the v0.5 substrate-rebuild spec of 2026-06-04).
 **Date:** 2026-06-07.
 **Authors:** Darren Brewster, Barry Sevig, Claude Opus 4.8.
-**Project:** OpenTalon / Doug Fir Labs (the `scholialang-spec` repository is the canonical home).
+**Project:** Doug Fir Labs (the `scholialang-spec` repository is the canonical home).
 **Source of truth:** the v0.6 golden-records compatibility manifest (`compatibility-manifest.json`, `spec_version "Scholia v0.6"`, frozen 2026-06-06) and the published `scholialang` v0.6 reference implementation (`scholialang/src/scholialang/`).
 
 This document supersedes `docs/scholia/SCHOLIA_v0.5_SPEC.md`. The v0.5
@@ -13,7 +13,7 @@ not edit it. v0.5 traces remain valid under v0.6 (see §10, §11).
 > SCHOLIA_v0.6_SPEC.md is the single source of truth for the Scholia
 > reasoning-trace notation. Every downstream surface (canonical agent
 > prompt, `scholialang` reference impl, `scholialang-mcp` validator,
-> `scholialang.org` spec page, OpenTalon mirror) derives from this
+> `scholialang.org` spec page and runtime mirrors) derives from this
 > document. If two sources disagree, this one wins. Where the prose and
 > the published `scholialang` v0.6 implementation disagree, the
 > implementation is ground truth — file an issue against this spec.
@@ -245,7 +245,7 @@ edges from them.
 > cross-session inline refs, and validators that are not passed a
 > registry will flag such a bare inline ref. This is a deliberate v0.6
 > boundary (the deeper inline-operator-regex change is a v0.7 non-goal,
-> matching OpenTalon's v0.6 Phase-3 boundary). Emitters that need a
+> matching the v0.6 Phase-3 boundary). Emitters that need a
 > cross-trace reference to validate clean under a registry-less validator
 > should use the structured `to="sha256:<cid>"` attribute form, or keep
 > the referenced atom in-trace. See §13.3 for the parse-time/lazy

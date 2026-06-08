@@ -31,7 +31,7 @@
 
 ## Why v0.4 exists
 
-Codex's read-only analysis of the t42 backend Atlas sweep (preserved at `docs/reports/2026-05-22-codex-atlas-token-analysis.md`) named eight enhancements that would graduate Scholia from "excellent for orientation and triage" to "operationally sufficient for precise refactors":
+Codex's read-only analysis of the legacy backend Atlas sweep (preserved at `docs/reports/2026-05-22-codex-atlas-token-analysis.md`) named eight enhancements that would graduate Scholia from "excellent for orientation and triage" to "operationally sufficient for precise refactors":
 
 1. Stable atom IDs that survive regeneration
 2. Exported symbols with line spans
@@ -72,7 +72,7 @@ These collectively define Scholia v0.4. v0.3.x stays **intentionally minimal** �
 The order is **strictly enforced** because v0.4 atoms produced before v0.3.1 ships would be unreadable by current consumers.
 
 ```
-Today: Scholia v0.3 (shipped — 1,529 atoms validated in t42 sweep)
+Today: Scholia v0.3 (shipped — 1,529 atoms validated in the legacy sweep)
    │
    ↓
 v0.3.1: minimal-but-extensible primitive hooks

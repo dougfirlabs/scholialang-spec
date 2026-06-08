@@ -21,7 +21,7 @@
 **Status:** CANONICAL (v0.5 substrate rebuild — supersedes v0.4 draft of 2026-05-22).
 **Date:** 2026-06-04.
 **Authors:** Darren Brewster, Barry Sevig, Claude Opus 4.7.
-**Project:** OpenTalon / Doug Fir Labs (the `scholialang-spec` repository is the canonical home).
+**Project:** Doug Fir Labs (the `scholialang-spec` repository is the canonical home).
 
 This document supersedes `docs/scholia/legacy/SCHOLIA_v0.4_SPEC.md`. The
 v0.4 draft is preserved unchanged at that path with a "superseded"
@@ -30,7 +30,7 @@ banner; do not edit it.
 > SCHOLIA_v0.5_SPEC.md is the single source of truth for the Scholia
 > reasoning-trace notation. Every downstream surface (canonical agent
 > prompt, `scholialang` reference impl, `scholialang-mcp` validator,
-> `scholialang.org` spec page, OpenTalon mirror) derives from this
+> `scholialang.org` spec page and runtime mirrors) derives from this
 > document. If two sources disagree, this one wins.
 
 ---
@@ -395,8 +395,8 @@ This section is a brief migration sketch. The full migration recipe
 
 - **Add the 6 new rules.** The reference impl in
   `scholialang/src/scholialang/validator.py` is the source. Tools that
-  vendor their own validator (`scholialang-mcp`, OT mirror at
-  `src/opentalon/scholia/validator.py`) need a coordinated port.
+  vendor their own validator (`scholialang-mcp` and private product mirrors)
+  need a coordinated port.
 - **No rule removed.** Backports of the new rules into a v0.4-shaped
   validator should not alter rule 1-11 behavior.
 

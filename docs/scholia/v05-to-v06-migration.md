@@ -2,7 +2,7 @@
 
 **Audience:** consumers of pre-v0.6 traces (validators, dashboards,
 enrichers), maintainers of emitters that produce Scholia atoms, authors
-of the OpenTalon / scholialang-mcp runtime mirrors, and anyone wiring up
+of runtime mirrors such as `scholialang-mcp`, and anyone wiring up
 the v0.6 DAG registry or lazy canonical-prelude.
 
 **Target reading time:** ~10 minutes.
@@ -187,8 +187,7 @@ Adopt the substrate incrementally; all of it is optional.
    rule behavior. Add back-compat tests: every v0.5-shaped fixture must
    pass v0.6 validation with no new errors/warnings.
 4. **Bump `SCHOLIA_VALIDATOR_VERSION` to `0.6.0`.** Vendored validators
-   (scholialang-mcp, OpenTalon's `src/opentalon/scholia/validator.py`)
-   need a coordinated port.
+   (`scholialang-mcp` and private product mirrors) need a coordinated port.
 
 ### §3.4 Consumers (dashboards, runners, registry/prelude users)
 
