@@ -7,6 +7,20 @@ Scholia is a structured reasoning notation for agent traces. It is
 designed to make reasoning artifacts readable, diffable, validateable,
 and portable across tools.
 
+Scholia v0.6 makes agent reasoning portable, inspectable, and reusable
+across sessions using content-addressed reasoning traces. v0.6 is the v0.5
+closed vocabulary plus a content-addressed substrate: optional
+`canonical_id` hashes, a canonical-id-keyed DAG registry, and the three core
+lazy-prelude modes `hash_only`, `hash_list`, and `inline`.
+
+## Current v0.6 Scope
+
+`scholialang-spec` is the canonical home for the v0.6 language contract:
+the additive `canonical_id` substrate, canonical-id-keyed registry semantics,
+canonical-id-aware `REFER` resolution, migration notes from v0.5, and the
+three finalized lazy-prelude modes. Implementation packages and host tooling
+should point readers here for normative v0.6 behavior.
+
 ## Contents
 
 - `docs/scholia/SCHOLIA_v0.6_SPEC.md` - canonical Scholia v0.6 spec
@@ -30,6 +44,15 @@ and portable across tools.
   reference implementation
 - [`scholialang-mcp`](https://github.com/dougfirlabs/scholialang-mcp) -
   MCP and LSP protocol tooling
+- [`scholialang.org`](https://github.com/dougfirlabs/scholialang.org) -
+  public website, launch kit, playground, and examples gallery
+
+## Launch Links
+
+- Public spec: https://scholialang.org/spec
+- Launch article: https://scholialang.org/why-reasoning-needs-a-protocol-layer
+- Eval summary: https://scholialang.org/eval-summary
+- Playground: https://scholialang.org/playground
 
 ## Version
 
