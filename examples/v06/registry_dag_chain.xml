@@ -1,0 +1,27 @@
+<!--
+  Scholia v0.6 example — a Deciding + Concluding chain suitable for the
+  DAG registry and the lazy prelude.
+
+  This trace carries no inline canonical_id attributes; the parser stamps
+  them at parse time (compute_canonical_id over {kind, content.strip(),
+  attrs}). After parsing, put() the atoms into a Registry to form the
+  premise->conclusion DAG (REFER/IMPLIES edges), then render any of the 3
+  core prelude modes over the prior atoms. See
+  examples/v06/validate_examples.py and examples/v06/prelude_*.txt.
+
+  Validates clean under the published scholialang v0.6 validator
+  (no errors, no warnings).
+-->
+<Step id="step_01" name="decide merge strategy and close">
+  <Goal id="G_01" scope="trace" priority="required" criticality="verifier">Choose a merge strategy that preserves history.</Goal>
+  <Constraint id="Cn_01" scope="trace">No force-push to main.</Constraint>
+  <Hypothesis id="H_01">A merge commit preserves both histories.</Hypothesis>
+  <Observation id="Obs_01">git log shows two divergent branches with no shared tip.</Observation>
+  <Evidence id="E_01" for="H_01" polarity="supports">REFER:Obs_01 shows divergence that a merge commit records.</Evidence>
+  <Deciding id="D_01">
+    <Alternative id="Alt_01" label="rebase" rejected_because="rewrites shared history">Rebase would flatten the chain.</Alternative>
+    <Finding id="F_choice" for_hyp="H_01" status="met">Chose merge over rebase and squash.</Finding>
+  </Deciding>
+  <Finding id="F_01" for_hyp="H_01" status="met">Merge preserves both histories.</Finding>
+  <Concluding id="C_01" for_goal="G_01" criticality="verifier">REFER:F_01 AND REFER:E_01 IMPLIES merge is the correct strategy.</Concluding>
+</Step>

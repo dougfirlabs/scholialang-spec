@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate §2 (Atom Catalog) of SCHOLIA_v0.5_SPEC.md from scholialang.atoms.
+"""Generate §2 (Atom Catalog) of SCHOLIA_v0.6_SPEC.md from scholialang.atoms.
 
 This script is the single source of truth for §2 of the canonical spec.
 It walks ``scholialang.atoms._ATOM_CLASSES`` alphabetically, groups by
@@ -14,6 +14,7 @@ Usage::
     python scripts/atoms_to_spec.py --check spec.md  # assert §2 is current
 
 PRD: rsi-scholia-v0.5-03-spec-docs-reconciliation, story v05-docs-00.
+Updated for v0.6: scholia-v0.6-pub-03-spec-authoring, story pub-03-02.
 """
 from __future__ import annotations
 
@@ -173,9 +174,12 @@ def render_section_two(atom_classes: dict[str, type]) -> str:
     lines.append("## §2 Atom catalog")
     lines.append("")
     lines.append(
-        f"The Scholia v0.5 closed set is **{len(atom_classes)} atom kinds**, "
+        f"The Scholia v0.6 closed set is **{len(atom_classes)} atom kinds**, "
         "grouped into seven categories. Names are PascalCase. Adding an "
-        "atom kind is a breaking change and requires a spec version bump."
+        "atom kind is a breaking change and requires a spec version bump. "
+        "v0.6 is additive at the substrate layer (see §10): the closed set "
+        "is unchanged from v0.5; only the base `Atom` grows a universal "
+        "`canonical_id` attribute."
     )
     lines.append("")
 

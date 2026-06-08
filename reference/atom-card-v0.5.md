@@ -1,15 +1,25 @@
 # Scholia v0.5 — Atom Card
 
 **Status:** Canonical reference card. Derived from
-[`docs/scholia/SCHOLIA_v0.5_SPEC.md`](../docs/scholia/SCHOLIA_v0.5_SPEC.md).
-Embeddable as an iframe from `scholialang.org/spec/` and from
-`scholialang-mcp` IDE tooltips.
+[`docs/scholia/SCHOLIA_v0.6_SPEC.md`](../docs/scholia/SCHOLIA_v0.6_SPEC.md)
+(the catalog is unchanged from v0.5; this card keeps its `-v0.5`
+filename for stable embeds). Embeddable as an iframe from
+`scholialang.org/spec/` and from `scholialang-mcp` IDE tooltips.
 
-The Scholia v0.5 closed set is **32 atom kinds** organized into
-**seven categories**. The full per-atom reference (attributes, body,
-examples, validator rules) lives in
+The Scholia closed set is **32 atom kinds** organized into **seven
+categories** — unchanged from v0.5 through v0.6. The full per-atom
+reference (attributes, body, examples, validator rules) lives in
 [`notation-reference.md`](notation-reference.md). This card is the
 one-page glance.
+
+> **v0.6 — universal base attribute.** Every atom below now carries an
+> optional `canonical_id` (`sha256:<12 hex>`), a content address over
+> `{kind, content.strip(), attrs}` (provenance excluded). It is
+> parser-stamped, enables cross-session `REFER:sha256:<cid>` reuse via
+> the DAG registry, and is checked by the `canonical_id_well_formed`
+> validator rule. The closed catalog is unchanged from v0.5 — v0.6 adds
+> the base attribute, the registry, and the lazy prelude, not new atoms.
+> See `SCHOLIA_v0.6_SPEC.md` §10 / §12 / §13.
 
 ---
 
@@ -118,8 +128,11 @@ explicit `<Retract>`.
 
 ---
 
-*Card v0.5 — sourced from `reference/atoms_index.yaml`. The
-[full notation reference](notation-reference.md) has attributes,
-examples, and validator rules per atom. The
-[canonical spec](../docs/scholia/SCHOLIA_v0.5_SPEC.md) has §3
-operators, §4 validator rules, and the v0.4→v0.5 change manifest.*
+*Card — sourced from `reference/atoms_index.yaml` (v0.6). The
+[full notation reference](notation-reference.md) has attributes
+(including the universal `canonical_id` base attribute), examples, and
+validator rules per atom. The
+[canonical spec](../docs/scholia/SCHOLIA_v0.6_SPEC.md) has §3 operators
+(incl. `REFER:sha256` / `IMPLIES:sha256`), §4 validator rules, §10–§13
+the canonical_id substrate / registry / lazy prelude, and the v0.5→v0.6
+change manifest.*

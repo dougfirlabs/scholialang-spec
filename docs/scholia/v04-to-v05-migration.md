@@ -49,8 +49,10 @@ for `<Deciding>` when answering "which option do we take?".
   `for_goal` into `for_hyp` internally.
 - **Deprecation warning:** fresh v0.5 code that programmatically
   constructs `Finding(for_goal=...)` emits a `DeprecationWarning` once
-  per instance. Migrate call sites before v0.6 (when the alias is
-  removed entirely).
+  per instance. Migrate call sites soon. (**Reconciled in v0.6:** the
+  alias is **not** removed in v0.6 — the published v0.6 implementation
+  keeps `for_goal` deprecated and **defers removal to v0.7**. See
+  `SCHOLIA_v0.6_SPEC.md` §10.8 / §15.)
 
 **Migration recipe** for emitter code:
 
@@ -225,8 +227,11 @@ v0.5 reconciliation. The 2026-06-04 drift audit flagged this; the v0.5
 spec corrects it.
 
 **Q. Will `<Finding for_goal="...">` keep working forever?**
-A. Through v0.5 it parses cleanly; in v0.6 the alias is removed. Plan
-to migrate call sites between releases.
+A. It parses cleanly through v0.5 **and v0.6** — the alias stays
+deprecated, not removed, in v0.6. **Removal is deferred to v0.7**
+(reconciled against the published v0.6 implementation; see
+`SCHOLIA_v0.6_SPEC.md` §10.8 / §15). Plan to migrate call sites before
+v0.7; the `DeprecationWarning` surfaces the ones to fix.
 
 **Q. What's the relationship between `<Concluding>` and `<Finding>`?**
 A. `<Finding>` is granular ("this hypothesis evaluates to met").

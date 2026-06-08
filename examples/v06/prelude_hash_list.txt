@@ -1,0 +1,11 @@
+Prior session atoms available via REFER:canonical_id:
+  - sha256:5aaaa52bea55 (Goal) "Choose a merge strategy that preserves history."
+  - sha256:d862d88b90cf (Constraint) "No force-push to main."
+  - sha256:97a7e8443984 (Hypothesis) "A merge commit preserves both histories."
+  - sha256:0f3d312e1eba (Observation) "git log shows two divergent branches with no shared tip."
+  - sha256:84ec491c426c (Evidence) "REFER:Obs_01 shows divergence that a merge commit records."
+  - sha256:f37f6c44cd69 (Deciding) ""
+  - sha256:30bc29a2bc82 (Alternative) "Rebase would flatten the chain."
+  - sha256:78f750876b53 (Finding) "Chose merge over rebase and squash."
+  - sha256:d94c5af42443 (Finding) "Merge preserves both histories."
+  - sha256:31faba5fa34b (Concluding) "REFER:F_01 AND REFER:E_01 IMPLIES merge is the correct stra…"

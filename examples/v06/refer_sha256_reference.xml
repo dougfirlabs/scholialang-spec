@@ -1,0 +1,37 @@
+<!--
+  Scholia v0.6 example — REFER by canonical_id (content-addressable reuse).
+
+  Step 2 (a later session's work, carried into the same trace) reuses the
+  Finding proved in Step 1 by its canonical_id, via the structured
+  attribute form <Reference to="sha256:<cid>">. The attribute-form
+  canonical_id resolves against the trace's in-trace canonical_id index,
+  so reference_complete passes without a registry.
+
+  CROSS-SESSION note: in production, Step 1's F_01 would live in the DAG
+  registry (~/.scholia/registry.proofchain.json) from a prior session and
+  Step 2 would dereference it via the registry (resolve_refer path 3). The
+  published validate() does not thread a registry, so this example keeps
+  the referenced atom in-trace to validate clean standalone. The genuine
+  registry-backed cross-session resolution is demonstrated in
+  examples/v06/validate_examples.py (resolve_refer + Registry). See
+  SCHOLIA_v0.6_SPEC.md §3.4 (resolution boundary) and §13.3.
+
+  Validates clean under the published scholialang v0.6 validator
+  (no errors, no warnings).
+-->
+<Step id="step_01" name="prove coverage">
+  <Goal id="G_01" scope="trace" priority="required" criticality="ledger">Confirm coverage is adequate.</Goal>
+  <Hypothesis id="H_01">Coverage is adequate.</Hypothesis>
+  <Observation id="Obs_01">Test suite reports 94% line coverage.</Observation>
+  <Evidence id="E_01" for="H_01" polarity="supports">REFER:Obs_01 supports adequacy.</Evidence>
+  <Finding id="F_01" for_hyp="H_01" status="met">Coverage is adequate.</Finding>
+  <Concluding id="C_01" for_goal="G_01" criticality="ledger">REFER:F_01 IMPLIES coverage is confirmed.</Concluding>
+</Step>
+<Step id="step_02" name="reuse coverage finding by canonical_id">
+  <Goal id="G_02" scope="trace" priority="required" criticality="ledger">Reuse the coverage finding without re-deriving it.</Goal>
+  <Hypothesis id="H_02">The prior coverage finding still applies.</Hypothesis>
+  <Reference id="Ref_02" to="sha256:ed7ede06c79c">Reuse Finding F_01 by content address (canonical_id).</Reference>
+  <Evidence id="E_02" for="H_02" polarity="supports">REFER:Ref_02 carries the prior finding forward.</Evidence>
+  <Finding id="F_02" for_hyp="H_02" status="met">Reuse is valid; no re-derivation needed.</Finding>
+  <Concluding id="C_02" for_goal="G_02" criticality="ledger">REFER:Ref_02 AND REFER:F_02 IMPLIES the reuse holds.</Concluding>
+</Step>
