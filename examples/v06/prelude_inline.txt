@@ -1,0 +1,12 @@
+Prior session atoms (transcript form):
+
+<Goal id="G_01" canonical_id="sha256:5aaaa52bea55" scope="trace" priority="required" criticality="verifier">Choose a merge strategy that preserves history.</Goal>
+<Constraint id="Cn_01" canonical_id="sha256:d862d88b90cf" scope="trace">No force-push to main.</Constraint>
+<Hypothesis id="H_01" canonical_id="sha256:97a7e8443984">A merge commit preserves both histories.</Hypothesis>
+<Observation id="Obs_01" canonical_id="sha256:0f3d312e1eba">git log shows two divergent branches with no shared tip.</Observation>
+<Evidence id="E_01" canonical_id="sha256:84ec491c426c" for="H_01" polarity="supports">REFER:Obs_01 shows divergence that a merge commit records.</Evidence>
+<Deciding id="D_01" canonical_id="sha256:f37f6c44cd69"><Alternative id="Alt_01" canonical_id="sha256:30bc29a2bc82" label="rebase" rejected_because="rewrites shared history">Rebase would flatten the chain.</Alternative><Finding id="F_choice" canonical_id="sha256:78f750876b53" for_hyp="H_01" status="met">Chose merge over rebase and squash.</Finding></Deciding>
+<Alternative id="Alt_01" canonical_id="sha256:30bc29a2bc82" label="rebase" rejected_because="rewrites shared history">Rebase would flatten the chain.</Alternative>
+<Finding id="F_choice" canonical_id="sha256:78f750876b53" for_hyp="H_01" status="met">Chose merge over rebase and squash.</Finding>
+<Finding id="F_01" canonical_id="sha256:d94c5af42443" for_hyp="H_01" status="met">Merge preserves both histories.</Finding>
+<Concluding id="C_01" canonical_id="sha256:31faba5fa34b" for_goal="G_01" criticality="verifier">REFER:F_01 AND REFER:E_01 IMPLIES merge is the correct strategy.</Concluding>

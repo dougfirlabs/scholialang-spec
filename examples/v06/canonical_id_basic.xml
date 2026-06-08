@@ -1,0 +1,20 @@
+<!--
+  Scholia v0.6 example — canonical_id present on every atom.
+
+  Each atom carries its content-addressable canonical_id
+  (sha256:<12 hex> over {kind, content.strip(), attrs}, provenance
+  excluded). These values were computed by the published scholialang
+  v0.6 compute_canonical_id and round-trip through parse(); the
+  canonical_id_well_formed validator rule passes (recomputed == claimed).
+
+  Validates clean under the published scholialang v0.6 validator
+  (no errors, no warnings). See examples/v06/README.md.
+-->
+<Step id="step_01" name="confirm migration complete">
+  <Goal id="G_01" canonical_id="sha256:bf6e30cce9a8" scope="trace" priority="required" criticality="ledger">Migrate Finding for_goal callers to for_hyp.</Goal>
+  <Hypothesis id="H_01" canonical_id="sha256:5a17f169cbd9">Every call-site has moved to for_hyp.</Hypothesis>
+  <Observation id="Obs_01" canonical_id="sha256:6a0535014191">grep -rn "for_goal=" src returned zero matches.</Observation>
+  <Evidence id="E_01" canonical_id="sha256:bfe4b088b050" for="H_01" polarity="supports">REFER:Obs_01 confirms no remaining callers.</Evidence>
+  <Finding id="F_01" canonical_id="sha256:2df5addb97bb" for_hyp="H_01" status="met">All call-sites migrated.</Finding>
+  <Concluding id="C_01" canonical_id="sha256:600e8449f856" for_goal="G_01" criticality="ledger">REFER:F_01 AND REFER:Obs_01 IMPLIES the migration is complete.</Concluding>
+</Step>

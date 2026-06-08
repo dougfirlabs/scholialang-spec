@@ -1,4 +1,4 @@
-# Scholia v0.5 atom index — single source of truth for the notation
+# Scholia v0.6 atom index — single source of truth for the notation
 # reference doc. ``scripts/notation_reference_gen.py`` reads this file
 # and emits ``reference/notation-reference.md``. The atom set, names,
 # and attribute lists must match ``scholialang/src/scholialang/atoms.py``
@@ -17,11 +17,30 @@
 #                  "empty" / "structured (see notes)".
 #   example:       XML snippet.
 #   applies_rules: validator rule names from §4 of the canonical spec.
+#
+# v0.6 — UNIVERSAL BASE ATTRIBUTES.
+# Every atom kind below inherits two optional base attributes from the
+# Scholia ``Atom`` base type; they are NOT repeated in each kind's
+# ``attributes`` list because they apply uniformly:
+#   - ``id``           (string)  trace-scoped local identifier (all versions).
+#   - ``canonical_id`` (string)  NEW in v0.6 — ``sha256:<12 hex>`` content
+#                                address over {kind, content.strip(), attrs}
+#                                (provenance excluded). Parser-stamped;
+#                                validator rule ``canonical_id_well_formed``
+#                                recomputes and hard-fails on mismatch.
+#                                See SCHOLIA_v0.6_SPEC.md §10.1.
+# The closed catalog is unchanged from v0.5 (32 kinds). v0.6 adds the
+# base attribute, the DAG registry, and the lazy prelude — not new atoms.
 
-version: "0.5"
-spec: "SCHOLIA_v0.5_SPEC.md"
+version: "0.6"
+spec: "SCHOLIA_v0.6_SPEC.md"
 generated_by_hand: true
 total_atoms: 32
+
+# Base attributes carried by every atom kind (see header note above).
+base_attributes:
+  - { name: id,           type: string, required: false, notes: "trace-scoped local identifier (all versions)." }
+  - { name: canonical_id, type: string, required: false, notes: "v0.6 content address: sha256:<12 hex> over {kind, content.strip(), attrs}; provenance excluded. Parser-stamped; checked by canonical_id_well_formed." }
 
 atoms:
 
@@ -118,7 +137,7 @@ atoms:
     attributes:
       - { name: id,       type: string,                                                       required: false, notes: "trace-scoped identifier." }
       - { name: for_hyp,  type: string,                                                       required: false, notes: "id of the Hypothesis this Finding evaluates (v0.5 canonical)." }
-      - { name: for_goal, type: string,                                                       required: false, notes: "DEPRECATED in v0.5 — use for_hyp. Preserved through v0.6." }
+      - { name: for_goal, type: string,                                                       required: false, notes: "DEPRECATED in v0.5 — use for_hyp. Still accepted in v0.6 (deprecated, emits DeprecationWarning); removal deferred to v0.7." }
       - { name: status,   type: "met | unmet | partially_met | met_late",                     required: false, notes: "closure status when closing a required Goal." }
     body: "free-text"
     example: |

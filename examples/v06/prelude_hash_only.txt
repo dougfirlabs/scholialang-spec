@@ -1,0 +1,11 @@
+Prior session atoms available via REFER:canonical_id (bodies fetched lazily at parse time):
+  - REFER:sha256:5aaaa52bea55 (Goal)
+  - REFER:sha256:d862d88b90cf (Constraint)
+  - REFER:sha256:97a7e8443984 (Hypothesis)
+  - REFER:sha256:0f3d312e1eba (Observation)
+  - REFER:sha256:84ec491c426c (Evidence)
+  - REFER:sha256:f37f6c44cd69 (Deciding)
+  - REFER:sha256:30bc29a2bc82 (Alternative)
+  - REFER:sha256:78f750876b53 (Finding)
+  - REFER:sha256:d94c5af42443 (Finding)
+  - REFER:sha256:31faba5fa34b (Concluding)

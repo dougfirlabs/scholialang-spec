@@ -1,16 +1,20 @@
-"""Spec consistency test — asserts SCHOLIA_v0.5_SPEC.md ↔ scholialang.atoms.
+"""Spec consistency test — asserts SCHOLIA_v0.6_SPEC.md ↔ scholialang.atoms.
 
-Four assertions per PRD-03 hard_constraints[TESTS]:
+Targets the canonical v0.6 spec (the v0.5 spec is superseded/archived).
+The atom catalog is unchanged from v0.5 (32 kinds); v0.6 is additive at
+the substrate layer (canonical_id base attribute, registry, prelude).
+
+Four assertions per the spec-authoring hard_constraints[TESTS]:
 
 a) Every atom in scholialang.atoms._ATOM_CLASSES appears in
-   SCHOLIA_v0.5_SPEC.md §2.
-b) The atom count in §2 matches len(_ATOM_CLASSES) (== 32 at v0.5).
+   SCHOLIA_v0.6_SPEC.md §2.
+b) The atom count in §2 matches len(_ATOM_CLASSES) (== 32 at v0.6).
 c) atom-card-v0.5.md mentions all 32 atoms.
 d) No orphaned atom names appear (e.g. 'Decision' singular shouldn't
    appear in the current spec; it's only legal in the legacy/ doc).
 
 Plus three structural assertions:
-e) atoms_index.yaml lists exactly 32 atoms matching the impl.
+e) atoms_index.yaml (v0.6) lists exactly 32 atoms matching the impl.
 f) atoms_to_spec --check passes (the generated §2 matches what's in
    the spec doc).
 g) notation_reference_gen --check passes (the generated notation-
@@ -83,7 +87,7 @@ def atom_classes() -> dict[str, type]:
 
 @pytest.fixture(scope="module")
 def spec_text() -> str:
-    path = _spec_repo_root() / "docs" / "scholia" / "SCHOLIA_v0.5_SPEC.md"
+    path = _spec_repo_root() / "docs" / "scholia" / "SCHOLIA_v0.6_SPEC.md"
     return path.read_text(encoding="utf-8")
 
 
@@ -134,7 +138,7 @@ def test_every_atom_in_impl_appears_in_spec_section_two(
     expected = set(atom_classes)
     missing = expected - mentioned
     assert not missing, (
-        f"§2 of SCHOLIA_v0.5_SPEC.md is missing impl atoms: "
+        f"§2 of SCHOLIA_v0.6_SPEC.md is missing impl atoms: "
         f"{sorted(missing)}. Regenerate via "
         f"`python scripts/atoms_to_spec.py --out section2.md` and splice."
     )
@@ -155,7 +159,7 @@ def test_section_two_count_matches_impl(
     found = mentioned & impl_kinds
     assert len(found) == len(impl_kinds) == 32, (
         f"§2 mentions {len(found)} impl atoms but impl has {len(impl_kinds)} "
-        "and v0.5 targets exactly 32."
+        "and v0.6 targets exactly 32."
     )
 
 
@@ -220,7 +224,7 @@ def test_atoms_index_matches_impl(
     )
     assert atoms_index["total_atoms"] == len(expected) == 32, (
         f"atoms_index.total_atoms={atoms_index['total_atoms']} but "
-        f"len(_ATOM_CLASSES)={len(expected)}; both must be 32 at v0.5."
+        f"len(_ATOM_CLASSES)={len(expected)}; both must be 32 at v0.6."
     )
 
 
@@ -228,7 +232,7 @@ def test_atoms_index_matches_impl(
 
 
 def test_atoms_to_spec_check_passes() -> None:
-    spec_path = _spec_repo_root() / "docs" / "scholia" / "SCHOLIA_v0.5_SPEC.md"
+    spec_path = _spec_repo_root() / "docs" / "scholia" / "SCHOLIA_v0.6_SPEC.md"
     script = _scripts_dir() / "atoms_to_spec.py"
     result = subprocess.run(
         [sys.executable, str(script),

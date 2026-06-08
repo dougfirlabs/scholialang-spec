@@ -1,3 +1,21 @@
+# Scholia v0.5 — Specification (SUPERSEDED)
+
+> **Superseded:** Scholia v0.6 is now canonical. Use
+> [`SCHOLIA_v0.6_SPEC.md`](SCHOLIA_v0.6_SPEC.md) for current atom kinds,
+> operators, validator rules, the `canonical_id` substrate, the DAG
+> registry, the lazy canonical-prelude, and migration guidance. This v0.5
+> document is preserved unchanged below as a historical record; do not
+> edit it. v0.5 traces remain valid under v0.6 (v0.6 is additive). For
+> migration from the v0.5 trace shape to v0.6, see
+> [`v05-to-v06-migration.md`](v05-to-v06-migration.md).
+>
+> **Note (reconciled in v0.6):** the v0.5 text below states
+> `Finding.for_goal` is "removed in v0.6." That is **superseded** — the
+> published v0.6 implementation keeps `for_goal` **deprecated** and
+> **defers removal to v0.7**. See `SCHOLIA_v0.6_SPEC.md` §10.8 / §15.
+
+---
+
 # Scholia v0.5 — Specification
 
 **Status:** CANONICAL (v0.5 substrate rebuild — supersedes v0.4 draft of 2026-05-22).
