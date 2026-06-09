@@ -1,3 +1,15 @@
+<p align="center">
+  <img src="assets/scholialang-banner.png" alt="Scholialang" width="100%" />
+</p>
+
+<p align="center">
+  <a href="https://scholialang.org">Website</a> ·
+  <strong>Spec</strong> ·
+  <a href="https://github.com/dougfirlabs/scholialang-mcp">MCP</a> ·
+  <a href="https://github.com/dougfirlabs/scholialang">Python</a> ·
+  <a href="https://github.com/dougfirlabs">Doug Fir Labs</a>
+</p>
+
 # scholialang-spec
 
 This repository contains the Scholia language specification and
