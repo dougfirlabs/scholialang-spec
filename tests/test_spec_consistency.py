@@ -50,8 +50,10 @@ def _scholialang_src_candidates() -> list[Path]:
     # ``~/projects/`` as siblings.
     sibling = _spec_repo_root().parent / "scholialang" / "src"
     # Staging layout: scholialang lives at the OT repo root.
-    staging = _spec_repo_root().parents[4] / "scholialang" / "src"
-    return [sibling, staging]
+    candidates = [sibling]
+    if len(_spec_repo_root().parents) > 4:
+        candidates.append(_spec_repo_root().parents[4] / "scholialang" / "src")
+    return candidates
 
 
 def _scholialang_src() -> Path:
