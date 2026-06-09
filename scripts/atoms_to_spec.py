@@ -37,10 +37,11 @@ from pathlib import Path
 
 
 def _candidate_src_dirs(script_path: Path) -> list[Path]:
-    return [
-        script_path.resolve().parents[2] / "scholialang" / "src",
-        script_path.resolve().parents[6] / "scholialang" / "src",
-    ]
+    resolved = script_path.resolve()
+    candidates = [resolved.parents[2] / "scholialang" / "src"]
+    if len(resolved.parents) > 6:
+        candidates.append(resolved.parents[6] / "scholialang" / "src")
+    return candidates
 
 
 def _default_scholialang_src() -> Path:

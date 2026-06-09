@@ -63,3 +63,12 @@ with a banner. `docs/scholia/SCHOLIA_v0.4_SPEC.md` is superseded; the
 historical v0.4 draft is preserved with a banner at
 `docs/scholia/legacy/SCHOLIA_v0.4_SPEC.md`. v0.6 is additive — v0.5 (and
 v0.4) traces remain valid.
+
+## License
+
+The normative specification prose and documentation in this repository are
+licensed under CC-BY-4.0. See `LICENSE` and `LICENSE-POLICY.md`.
+
+Reference implementations, host integrations, MCP/LSP tooling, and package
+code live in sibling repositories and are licensed separately, generally under
+dual MIT OR Apache-2.0 terms.
