@@ -102,13 +102,14 @@ Atoms that carry epistemic claims — hypotheses, evidence, findings, and the cl
 |---|---|---|---|
 | `id` | string | no | trace-scoped identifier. |
 | `for_goal` | string | yes | id of the Goal this Concluding closes. |
-| `confidence` | float [0,1] | no | declared epistemic strength of the close. |
-| `criticality` | incidental | bridge | ledger | verifier | kernel | no | declared closure-tier; defaults to max(cited findings' criticality). |
+| `status` | met | unmet | partially_met | no | NEW in v0.6.1 — completion verdict on the goal-close (distinct from confidence/criticality). Optional; a status-less Concluding stays valid. Required only to satisfy goal_declared (rule 8) when closing a priority=required Goal. |
+| `confidence` | float [0,1] | no | declared epistemic strength of the close (certainty), not the completion verdict. |
+| `criticality` | incidental | bridge | ledger | verifier | kernel | no | declared closure-tier (load-bearing rank), not the completion verdict; defaults to max(cited findings' criticality). |
 
 **Example:**
 
 ```xml
-<Concluding id="C_01" for_goal="G_01" confidence="0.85" criticality="ledger">
+<Concluding id="C_01" for_goal="G_01" status="met" confidence="0.85" criticality="ledger">
   REFER:F_01 AND REFER:F_02 IMPLIES the migration is complete.
 </Concluding>
 ```

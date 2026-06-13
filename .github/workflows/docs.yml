@@ -4,16 +4,53 @@ on:
   push:
   pull_request:
 
+# Forbidden-token regex for the public-spec hygiene guard. This file
+# (.github/) is NOT in the scanned set, so the patterns can live here as
+# literals without the guard tripping over its own definition.
+env:
+  FORBIDDEN_REGEX: 'opentalon|OpenTalon|\.opentalon|src/opentalon|T42|t42|T6x7|t6x7|ProofDAG|proofdag|Co-Pilot|CoPilot|spec-stage|papers/scholia-v2|/home/'
+
 jobs:
   hygiene:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check public-spec hygiene
+
+      - name: Check public-spec hygiene (docs + src + tests + scripts)
         run: |
-          if grep -R -n -E 'T42|t42|ProofDAG|proofdag|opentalon|OpenTalon|\.opentalon|src/opentalon' docs examples README.md CHANGELOG.md CONTRIBUTING.md GOVERNANCE.md; then
+          # Scan the published surfaces for internal references. v0.6.1
+          # extends coverage beyond docs/ to src/, tests/, and scripts/
+          # (the leak previously hid in scripts/ and tests/ comments).
+          # Only existing paths are passed to grep so a missing optional
+          # dir (e.g. src/) does not produce a grep error (exit 2) that
+          # would read as a false failure.
+          roots=""
+          for p in docs examples scripts tests reference src \
+                   README.md CHANGELOG.md CONTRIBUTING.md GOVERNANCE.md \
+                   compatibility-manifest.json; do
+            [ -e "$p" ] && roots="$roots $p"
+          done
+          echo "Scanning: $roots"
+          if grep -R -n -I -E "$FORBIDDEN_REGEX" $roots; then
+            echo "::error::Forbidden internal reference found in a published surface."
             exit 1
           fi
+          echo "Public-spec hygiene OK — no internal references."
+
+      - name: Guard self-test (must catch a planted internal reference)
+        run: |
+          # Prove the guard actually fires: plant a forbidden token in a
+          # throwaway file OUTSIDE the repo tree and assert the same regex
+          # catches it. A guard that never fails is no guard.
+          tmp="$(mktemp -d)"
+          printf 'this mentions opentalon internally\n' > "$tmp/planted.txt"
+          if grep -R -n -I -E "$FORBIDDEN_REGEX" "$tmp"; then
+            echo "Self-test OK — guard catches a planted internal reference."
+          else
+            echo "::error::Guard self-test FAILED — planted reference was not caught."
+            exit 1
+          fi
+          rm -rf "$tmp"
+
       - name: Check examples exist
         run: test "$(find examples -name '*.xml' | wc -l)" -gt 0
-

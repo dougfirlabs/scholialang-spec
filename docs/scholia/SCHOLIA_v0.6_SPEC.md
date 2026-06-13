@@ -2,6 +2,7 @@
 
 **Status:** CANONICAL (v0.6 content-addressable-substrate release — supersedes the v0.5 substrate-rebuild spec of 2026-06-04).
 **Date:** 2026-06-07.
+**Revision:** v0.6.1 (2026-06-13) — additive/non-breaking: optional `status` on `<Concluding>`, rule-8 (`goal_declared`) reconciliation, stated `SCHOLIA_VALIDATOR_VERSION` → `0.6.1`. v0.6.0 stays valid. See §10.10.
 **Authors:** Darren Brewster, Barry Sevig, Claude Opus 4.8.
 **Project:** Doug Fir Labs (the `scholialang-spec` repository is the canonical home).
 **Source of truth:** the v0.6 golden-records compatibility manifest (`compatibility-manifest.json`, `spec_version "Scholia v0.6"`, frozen 2026-06-06) and the published `scholialang` v0.6 reference implementation (`scholialang/src/scholialang/`).
@@ -259,8 +260,12 @@ The v0.6 validator enforces the cumulative rule set: the structural and
 reference rules inherited from v0.2–v0.4, the six `<Concluding>`-scoped
 rules from v0.5, and the v0.6 content-addressable additions. The
 reference implementation in `scholialang/src/scholialang/validator.py`
-is the source; `RULE_NAMES` is the machine-readable list and
-`SCHOLIA_VALIDATOR_VERSION` reads `0.6.0`.
+is the source; `RULE_NAMES` is the machine-readable list and the spec's
+stated `SCHOLIA_VALIDATOR_VERSION` is `0.6.1` (the v0.6.1 reconciliation
+release — optional `status` on `<Concluding>` + rule-8 agreement). The
+published `scholialang` v0.6.0 build stamps `0.6.0`; the build that lands
+this reconciliation stamps `0.6.1`. The change is additive: v0.6.0 traces
+stay valid and the rule set is otherwise unchanged.
 
 ### §4.1 Existing structural rules (carried forward)
 
@@ -282,9 +287,21 @@ is the source; `RULE_NAMES` is the machine-readable list and
 7. **`constraint_respected`** — no `<Action>` violates an active
    `<Constraint>`.
 8. **`goal_declared`** — every `priority="required"` `<Goal>` has a
-   closing `<Concluding for_goal="...">` (or `<Finding for_goal="...">`
-   for back-compat) with `status` in `met`, `unmet`, `partially_met`,
-   or `met_late`. `<Meta:research-mode/>` exempts the trace.
+   closing `<Concluding for_goal="..." status="...">` (or, for
+   back-compat, `<Finding for_goal="..." status="...">`) whose `status`
+   is drawn from that atom's own attribute table: a `<Concluding>`'s
+   `status` is one of `met` / `unmet` / `partially_met` (the v0.6.1
+   optional `status` attribute — §6, `reference/notation-reference.md`);
+   the back-compat `<Finding>` path additionally accepts the legacy
+   `met_late` value its own table carries. `status` is OPTIONAL on a
+   `<Concluding>` in general (a status-less close stays valid under every
+   other rule); this rule is the *only* place a `status` is mandatory,
+   and then only when the close resolves a `priority="required"` Goal.
+   `<Meta:research-mode/>` exempts the trace. *(v0.6.1 reconciliation:
+   this rule and the `<Concluding>` attribute table now agree that
+   `status` is an allowed — and here required — attribute; the v0.6.0
+   contradiction, where the rule named a `status` the attribute table
+   omitted, is resolved.)*
 9. **`unknown_operator`** — every inline operator token is in the
    validator-ratified `CANONICAL_OPERATORS` set.
 10. **`location_edge_shape`** — `<Observation location="...">` matches
@@ -350,14 +367,16 @@ Validators return a `ValidationResult` exposing:
     "warnings": [{"rule": str, "atom_id": str, "message": str}, ...],
     "errors_by_rule":   {rule: [ValidationError, ...], ...},
     "warnings_by_rule": {rule: [ValidationWarning, ...], ...},
-    "scholia_validator_version": "0.6.0",
+    "scholia_validator_version": "0.6.1",  # "0.6.0" on the pre-reconciliation build
 }
 ```
 
 Unchanged in shape from v0.5 (`errors` / `warnings` arrays with
 per-violation `rule` / `atom_id` / `message`). v0.6 adds the
 `canonical_id_well_formed` rule name to the breakdown and stamps the
-validator version `0.6.0`.
+validator version: `0.6.1` on the reconciliation build (this spec), or
+`0.6.0` on the pre-reconciliation v0.6.0 build. The breakdown shape is
+identical across both.
 
 ### §4.5 Validity definition
 
@@ -400,7 +419,13 @@ paths — see §13.3 for the full resolver.)
 - `<Deciding>` must enumerate options and produce a `<Finding>`
   declaring the chosen option.
 - `<Concluding>` must declare `for_goal`, contain at least one `REFER:`
-  operator, and may declare `confidence` and `criticality`. It must NOT
+  operator, and may declare `status` (`met` / `unmet` / `partially_met`;
+  NEW in v0.6.1, see the `<Concluding>` attribute table in
+  `reference/notation-reference.md`), `confidence`, and `criticality`.
+  `status` is the completion verdict on the goal-close and is distinct
+  from `confidence` (certainty) and `criticality` (load-bearing rank); a
+  status-less `<Concluding>` stays valid (it is required only to satisfy
+  rule 8 when closing a `priority="required"` Goal — §4.1). It must NOT
   contain action-modal verbs (warning, not error).
 - `<Alternative>` is only legal inside `<Deciding>`.
 - `<Loop>` binds one variable name via `as`.
@@ -521,7 +546,8 @@ is an explicit v0.7 non-goal; do not assume it.
 
 - **Added:** `canonical_id_well_formed` (hard-fail; vacuous on
   `None`). **Modified:** `reference_complete` resolves canonical_id
-  targets (§4.3). `SCHOLIA_VALIDATOR_VERSION` → `0.6.0`.
+  targets (§4.3). `SCHOLIA_VALIDATOR_VERSION` → `0.6.0` (v0.6.0 build);
+  → `0.6.1` on the v0.6.1 reconciliation build (§10.10).
 
 ### §10.8 `Finding.for_goal` disposition (RECONCILIATION)
 
@@ -536,6 +562,34 @@ is an explicit v0.7 non-goal; do not assume it.
 ### §10.9 What did NOT change
 
 See §11.
+
+### §10.10 v0.6.0 → v0.6.1 reconciliation (NEW)
+
+v0.6.1 is an **additive, non-breaking** point release. v0.6.0 traces and
+tooling stay valid; nothing is deprecated. It contains exactly:
+
+1. **Optional `status` on `<Concluding>`** — `met` / `unmet` /
+   `partially_met` (§6; `<Concluding>` attribute table in
+   `reference/notation-reference.md`). It is the completion verdict on
+   the goal-close, distinct from `confidence` (certainty) and
+   `criticality` (load-bearing rank). A status-less `<Concluding>`
+   remains valid.
+2. **Rule-8 (`goal_declared`) reconciliation** — rule 8 (§4.1) and the
+   `<Concluding>` attribute table now agree that `status` is an allowed
+   attribute. The v0.6.0 contradiction (rule 8 named a `status` the
+   `<Concluding>` table omitted, which the reference parser rejected) is
+   resolved.
+3. **`SCHOLIA_VALIDATOR_VERSION` → `0.6.1`** in the spec's stated version
+   (§4, §10.7). The published v0.6.0 build stamps `0.6.0`; the
+   reconciliation build stamps `0.6.1`.
+4. **Golden record append** — a v0.6.1 golden record for a
+   status-bearing `<Concluding>` is appended to `compatibility-manifest.json`.
+   The `spec_version` string stays `"Scholia v0.6"` and the 2026-06-06
+   frozen records are byte-unchanged (append-only).
+
+No atom-kind changes; no other normative edits. See
+`docs/scholia/v06.0-to-v06.1-migration.md` for the migration note and the
+downstream propagation checklist.
 
 ---
 
