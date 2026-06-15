@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "spec_version": "Scholia v0.6",
+  "manifest_version": "2026-06-06",
+  "frozen": "2026-06-06",
+  "title": "Scholia v0.6 golden-records compatibility manifest",
+  "description": "Canonical golden trace records for the Scholia v0.6 contract. The 2026-06-06 frozen records pin the v0.6.0 baseline and are append-only — they MUST NOT be mutated. The spec_version string stays \"Scholia v0.6\" across point releases; the v0.6.1 reconciliation (optional status on <Concluding>) is added by appending a new golden record, not by editing the freeze. Each record's trace validates against the published scholialang reference validator at the stated minimum version.",
+  "schema": {
+    "record_fields": {
+      "id": "Stable manifest-local identifier.",
+      "spec_version": "Spec version the record exercises (e.g. 0.6.0, 0.6.1).",
+      "date_added": "ISO date the record was added.",
+      "frozen": "true for the 2026-06-06 freeze (append-only, never mutate); false for later appends.",
+      "title": "Human-readable summary of what the record demonstrates.",
+      "description": "What contract surface the record pins.",
+      "trace": "The canonical Scholia trace (XML).",
+      "expects": "Expected validation outcome and the minimum reference-implementation version that produces it."
+    }
+  },
+  "golden_records": [
+    {
+      "id": "v06-canonical-id-basic",
+      "spec_version": "0.6.0",
+      "date_added": "2026-06-06",
+      "frozen": true,
+      "title": "canonical_id on every atom; required Goal closed by a status-less Concluding",
+      "description": "Pins the v0.6.0 baseline: content-addressable canonical_id on every atom (canonical_id_well_formed passes, recomputed == claimed) and a priority=required Goal closed by a Concluding that carries for_goal but NO status. Mirrors examples/v06/canonical_id_basic.xml.",
+      "trace": "<Step id=\"step_01\" name=\"confirm migration complete\">\n  <Goal id=\"G_01\" canonical_id=\"sha256:bf6e30cce9a8\" scope=\"trace\" priority=\"required\" criticality=\"ledger\">Migrate Finding for_goal callers to for_hyp.</Goal>\n  <Hypothesis id=\"H_01\" canonical_id=\"sha256:5a17f169cbd9\">Every call-site has moved to for_hyp.</Hypothesis>\n  <Observation id=\"Obs_01\" canonical_id=\"sha256:6a0535014191\">grep -rn \"for_goal=\" src returned zero matches.</Observation>\n  <Evidence id=\"E_01\" canonical_id=\"sha256:bfe4b088b050\" for=\"H_01\" polarity=\"supports\">REFER:Obs_01 confirms no remaining callers.</Evidence>\n  <Finding id=\"F_01\" canonical_id=\"sha256:2df5addb97bb\" for_hyp=\"H_01\" status=\"met\">All call-sites migrated.</Finding>\n  <Concluding id=\"C_01\" canonical_id=\"sha256:600e8449f856\" for_goal=\"G_01\" criticality=\"ledger\">REFER:F_01 AND REFER:Obs_01 IMPLIES the migration is complete.</Concluding>\n</Step>",
+      "expects": {
+        "valid": true,
+        "errors": 0,
+        "warnings": 0,
+        "min_impl_version": "0.6.0",
+        "notes": "Status-less Concluding; the v0.6.0 closed-set parser accepts it. Unchanged across v0.6.1 — a status-less close stays valid."
+      }
+    },
+    {
+      "id": "v06-goal-close-via-finding-status",
+      "spec_version": "0.6.0",
+      "date_added": "2026-06-06",
+      "frozen": true,
+      "title": "required Goal closed via the back-compat Finding(for_goal, status) path",
+      "description": "Pins the v0.6.0 goal_declared (rule 8) back-compat path: a priority=required Goal closed by a <Finding for_goal=... status=\"met\"> (the for_goal alias is deprecated but read-accepted in v0.6, removal deferred to v0.7).",
+      "trace": "<Step id=\"Step_01\" name=\"Simple goal + finding closure\">\n  <Goal id=\"G_01\" scope=\"trace\" priority=\"required\">Ship a small change.</Goal>\n  <Action id=\"A_01\">Edit file foo.py.</Action>\n  <Finding id=\"F_01\" for_goal=\"G_01\" status=\"met\">File edited.</Finding>\n</Step>",
+      "expects": {
+        "valid": true,
+        "errors": 0,
+        "warnings": 0,
+        "min_impl_version": "0.6.0",
+        "notes": "Finding.for_goal is deprecated (use for_hyp) and emits a DeprecationWarning when set in Python; it remains read-accepted in v0.6, removal deferred to v0.7."
+      }
+    },
+    {
+      "id": "v06_1-concluding-status-met",
+      "spec_version": "0.6.1",
+      "date_added": "2026-06-13",
+      "frozen": false,
+      "title": "required Goal closed by a status-bearing <Concluding status=\"met\"> (v0.6.1)",
+      "description": "APPENDED for v0.6.1. Demonstrates the reconciliation: a priority=required Goal closed directly by a <Concluding for_goal=... status=\"met\">. status is the optional completion verdict (met|unmet|partially_met), distinct from confidence (certainty) and criticality (load-bearing rank). This is the form a producer following goal_declared (rule 8) literally emits. It is the v0.6.1 target contract: the pre-reconciliation v0.6.0 parser rejects status on <Concluding> (the closed-set parser omits it); the downstream scholialang v0.6.1 build (gated on this spec) accepts it.",
+      "trace": "<Step id=\"step_01\" name=\"confirm migration complete\">\n  <Goal id=\"G_01\" scope=\"trace\" priority=\"required\" criticality=\"ledger\">Migrate Finding for_goal callers to for_hyp.</Goal>\n  <Hypothesis id=\"H_01\">Every call-site has moved to for_hyp.</Hypothesis>\n  <Observation id=\"Obs_01\">grep -rn \"for_goal=\" src returned zero matches.</Observation>\n  <Evidence id=\"E_01\" for=\"H_01\" polarity=\"supports\">REFER:Obs_01 confirms no remaining callers.</Evidence>\n  <Finding id=\"F_01\" for_hyp=\"H_01\" status=\"met\">All call-sites migrated.</Finding>\n  <Concluding id=\"C_01\" for_goal=\"G_01\" status=\"met\" confidence=\"0.85\" criticality=\"ledger\">REFER:F_01 AND REFER:Obs_01 IMPLIES the migration is complete.</Concluding>\n</Step>",
+      "expects": {
+        "valid": true,
+        "errors": 0,
+        "min_impl_version": "0.6.1",
+        "notes": "Requires the v0.6.1 reconciliation build that adds optional status to the <Concluding> closed-set attributes. Under the pre-reconciliation v0.6.0 parser this trace fails (status rejected on <Concluding>) — that is the v0.6.0 contradiction this release resolves. status-less closes (the frozen records above) stay valid; this addition is additive and non-breaking."
+      }
+    }
+  ]
+}

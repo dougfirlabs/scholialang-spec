@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.6.1
+
+- **Additive, non-breaking.** v0.6.0 traces and tooling stay valid;
+  nothing is deprecated.
+- Adds optional `status` (`met` / `unmet` / `partially_met`) to
+  `<Concluding>` — the completion verdict on a goal-close, distinct from
+  `confidence` (certainty) and `criticality` (load-bearing rank). A
+  status-less `<Concluding>` stays valid. Updates `SCHOLIA_v0.6_SPEC.md`
+  §6, `reference/atoms_index.yaml`, and regenerates `notation-reference.md`.
+- Reconciles validator rule 8 (`goal_declared`): the rule and the
+  `<Concluding>` attribute table now agree that `status` is an allowed
+  attribute, resolving the v0.6.0 contradiction (rule named a `status`
+  the table omitted, which the reference parser rejected). Adds a
+  spec-consistency assertion for the agreement.
+- Bumps the spec's stated `SCHOLIA_VALIDATOR_VERSION` `0.6.0` → `0.6.1`
+  (§4, §10.7, §10.10). The published v0.6.0 build stamps `0.6.0`; the
+  reconciliation build stamps `0.6.1`.
+- Adds `compatibility-manifest.json` (golden-records) with a v0.6.1
+  golden record for a status-bearing `<Concluding>`, appended without
+  mutating the 2026-06-06 freeze; `spec_version` stays `"Scholia v0.6"`.
+- Adds `docs/scholia/v06.0-to-v06.1-migration.md`.
+- Extends the public-spec hygiene leak guard to scan `src/`, `tests/`,
+  and `scripts/` (in addition to `docs/`) with a guard self-test, and
+  scrubs internal references from `scripts/` and `tests/`.
+
 ## v0.6.0
 
 - Adds canonical `docs/scholia/SCHOLIA_v0.6_SPEC.md` (content-addressable
