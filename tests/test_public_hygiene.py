@@ -5,7 +5,7 @@ The authoritative guard is the ``hygiene`` job in
 regex locally so the guard is exercised by ``pytest`` (CI cannot be run
 from the dev loop). Two assertions:
 
-a) the published surfaces (docs/, examples/, scripts/, tests/,
+a) the published surfaces (docs/, examples/, conformance/, scripts/, tests/,
    reference/, src/ if present, the root markdown files, and
    ``compatibility-manifest.json``) contain NO internal references;
 b) the guard self-test: a planted internal reference IS caught.
@@ -37,7 +37,7 @@ def _forbidden_regex() -> str:
 
 # Scan roots — mirror the workflow's list; only existing paths are kept.
 _SCAN_CANDIDATES: tuple[str, ...] = (
-    "docs", "examples", "scripts", "tests", "reference", "src",
+    "docs", "examples", "conformance", "scripts", "tests", "reference", "src",
     "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "GOVERNANCE.md",
     "compatibility-manifest.json",
 )

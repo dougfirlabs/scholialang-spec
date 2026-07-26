@@ -323,7 +323,10 @@ Each Step has `id`, `name`, and 1..N child atoms.
 
 - `<Thinking>` can contain `<Storing/>`, `<Print/>`, hypotheses, inline operators, and prose.
 - `<Observation>` may carry `timestamp`.
-- `<Action>` may carry `timestamp` and must produce a `<Finding>`.
+- `<Action>` may carry `timestamp` and must produce a result
+  `<Finding>`/`<Concluding>`. Scholia v0.6.2 accepts nested-descendant
+  and immediate same-Step results, explicitly `REFER`-linked later results, and a
+  `records_result` graph edge targeting the Action.
 - `<Deciding>` must enumerate options and produce a `<Finding>` declaring the chosen option.
 - `<Alternative>` is only legal inside `<Deciding>`.
 - `<Loop>` binds one variable name.
@@ -337,7 +340,10 @@ A Scholia trace is valid if all of the following hold:
 1. **Well-formed:** every atom has a known kind, or is the research-mode pseudo-atom.
 2. **Reference-complete:** every inline or structured reference resolves.
 3. **Decision-closed:** every `<Deciding>` produces a `<Finding>` that names a branch.
-4. **Action-recorded:** every `<Action>` is followed by or contains a `<Finding>`.
+4. **Action-recorded:** every `<Action>` has a nested or immediate
+   result, an explicitly `REFER`-linked later result, or a
+   `records_result` graph edge. Chronological order alone is
+   insufficient for a non-immediate result.
 5. **Hypothesis-evaluated:** every `<Hypothesis>` has linked `<Evidence>` or explicit `<Uncertainty>`.
 6. **Retract-consistent:** every `<Retract>` references an existing `<Finding>`.
 7. **Constraint-respected:** no `<Action>` violates an active `<Constraint>`.
