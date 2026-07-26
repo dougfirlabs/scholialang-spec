@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.6.2
+
+- Corrects validator Rule 4, `action_recorded`, for recursive traces:
+  a later cross-step Finding may record an Action through a direct
+  `REFER`, or through one Observation/Evidence `REFER` hop.
+- Accepts a later goal-closing Concluding that directly `REFER`s the
+  Action and a generic `records_result` graph edge targeting the Action.
+- Keeps provenance strict: chronological order alone is insufficient
+  for a non-immediate result. Unrelated, order-only, and unclosed Action
+  cases remain invalid.
+- Adds the shared, self-describing conformance suite
+  `conformance/v0.6.2/action_recorded.json` with nine positive and four
+  negative cases, including explicit nested and legacy immediate-sibling
+  coverage, plus implementation-independent integrity tests.
+- Bumps the stated `SCHOLIA_VALIDATOR_VERSION` to `0.6.2` and adds
+  `docs/scholia/v06.1-to-v06.2-migration.md`.
+- No atom, attribute, operator, parser, or validator report-shape
+  changes. Existing nested and immediate same-Step result forms remain
+  valid.
+
 ## v0.6.1
 
 - **Additive, non-breaking.** v0.6.0 traces and tooling stay valid;

@@ -18,14 +18,13 @@ jobs:
 
       - name: Check public-spec hygiene (docs + src + tests + scripts)
         run: |
-          # Scan the published surfaces for internal references. v0.6.1
-          # extends coverage beyond docs/ to src/, tests/, and scripts/
-          # (the leak previously hid in scripts/ and tests/ comments).
+          # Scan every published surface, including point-release
+          # conformance suites.
           # Only existing paths are passed to grep so a missing optional
           # dir (e.g. src/) does not produce a grep error (exit 2) that
           # would read as a false failure.
           roots=""
-          for p in docs examples scripts tests reference src \
+          for p in docs examples conformance scripts tests reference src \
                    README.md CHANGELOG.md CONTRIBUTING.md GOVERNANCE.md \
                    compatibility-manifest.json; do
             [ -e "$p" ] && roots="$roots $p"

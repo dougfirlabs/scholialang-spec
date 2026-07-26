@@ -4,7 +4,7 @@
   "manifest_version": "2026-06-06",
   "frozen": "2026-06-06",
   "title": "Scholia v0.6 golden-records compatibility manifest",
-  "description": "Canonical golden trace records for the Scholia v0.6 contract. The 2026-06-06 frozen records pin the v0.6.0 baseline and are append-only — they MUST NOT be mutated. The spec_version string stays \"Scholia v0.6\" across point releases; the v0.6.1 reconciliation (optional status on <Concluding>) is added by appending a new golden record, not by editing the freeze. Each record's trace validates against the published scholialang reference validator at the stated minimum version.",
+  "description": "Canonical golden trace records for the Scholia v0.6 contract. The 2026-06-06 frozen records pin the v0.6.0 baseline and are append-only — they MUST NOT be mutated. The spec_version string stays \"Scholia v0.6\" across point releases; v0.6.1 appended a golden record, while rule-focused positive/negative point-release cases are registered as conformance suites. Each record's trace validates against the published scholialang reference validator at the stated minimum version.",
   "schema": {
     "record_fields": {
       "id": "Stable manifest-local identifier.",
@@ -15,8 +15,24 @@
       "description": "What contract surface the record pins.",
       "trace": "The canonical Scholia trace (XML).",
       "expects": "Expected validation outcome and the minimum reference-implementation version that produces it."
+    },
+    "suite_fields": {
+      "id": "Stable manifest-local identifier.",
+      "spec_version": "Point release the suite exercises.",
+      "rule": "Validator rule pinned by the suite.",
+      "path": "Repository-relative path to the self-describing suite.",
+      "description": "Human-readable summary of the contract."
     }
   },
+  "conformance_suites": [
+    {
+      "id": "v06_2-action-recorded",
+      "spec_version": "0.6.2",
+      "rule": "action_recorded",
+      "path": "conformance/v0.6.2/action_recorded.json",
+      "description": "Nine positive and four negative Rule-4 cases covering nested and immediate results, direct and indirect cross-step results, goal-closing Concluding, records_result graph edges, and strict provenance failures."
+    }
+  ],
   "golden_records": [
     {
       "id": "v06-canonical-id-basic",

@@ -2,10 +2,10 @@
 
 **Status:** CANONICAL (v0.6 content-addressable-substrate release — supersedes the v0.5 substrate-rebuild spec of 2026-06-04).
 **Date:** 2026-06-07.
-**Revision:** v0.6.1 (2026-06-13) — additive/non-breaking: optional `status` on `<Concluding>`, rule-8 (`goal_declared`) reconciliation, stated `SCHOLIA_VALIDATOR_VERSION` → `0.6.1`. v0.6.0 stays valid. See §10.10.
+**Revision:** v0.6.2 (2026-07-26) — Rule 4 (`action_recorded`) accepts explicit cross-step result links and generic `records_result` graph edges; chronological order alone is insufficient for a non-immediate result. Stated `SCHOLIA_VALIDATOR_VERSION` → `0.6.2`. See §10.11.
 **Authors:** Darren Brewster, Barry Sevig, Claude Opus 4.8.
 **Project:** Doug Fir Labs (the `scholialang-spec` repository is the canonical home).
-**Source of truth:** the v0.6 golden-records compatibility manifest (`compatibility-manifest.json`, `spec_version "Scholia v0.6"`, frozen 2026-06-06) and the published `scholialang` v0.6 reference implementation (`scholialang/src/scholialang/`).
+**Source of truth:** this document, the v0.6 golden-records compatibility manifest (`compatibility-manifest.json`, `spec_version "Scholia v0.6"`, frozen 2026-06-06), and the point-release conformance suites under `conformance/`.
 
 This document supersedes `docs/scholia/SCHOLIA_v0.5_SPEC.md`. The v0.5
 spec is preserved unchanged at that path with a "superseded" banner; do
@@ -15,9 +15,9 @@ not edit it. v0.5 traces remain valid under v0.6 (see §10, §11).
 > reasoning-trace notation. Every downstream surface (canonical agent
 > prompt, `scholialang` reference impl, `scholialang-mcp` validator,
 > `scholialang.org` spec page and runtime mirrors) derives from this
-> document. If two sources disagree, this one wins. Where the prose and
-> the published `scholialang` v0.6 implementation disagree, the
-> implementation is ground truth — file an issue against this spec.
+> document. If two sources disagree, this document and its point-release
+> conformance fixtures win; implementation packages must port the shared
+> contract before claiming the corresponding validator version.
 
 ---
 
@@ -81,12 +81,12 @@ What v0.6 adds (compact summary; see §10 for the change manifest):
 Pre-v0.6 traces (no `canonical_id`, no registry, no `REFER:sha256`)
 MUST parse and validate cleanly. `canonical_id_well_formed` is vacuous
 on an atom that carries no `canonical_id` — a v0.5 trace exercises zero
-new hard-fail behavior. v0.6 is strictly additive.
+new hard-fail behavior. The v0.6.0 substrate is strictly additive;
+point-release validator corrections are identified explicitly in §10.
 
-> **Scope note (manifest-bounded).** This spec authors *exactly* the
-> contracts in the 2026-06-06 golden-records manifest and the published
-> `scholialang` v0.6 implementation. It introduces no fields,
-> attributes, or rules beyond them. The two quality-recovery prelude
+> **Scope note.** The frozen 2026-06-06 records remain immutable.
+> Point-release contracts append records or add self-describing suites
+> under `conformance/`; they do not rewrite the freeze. The two quality-recovery prelude
 > arms (`hash_semantic_preview`, `selective_inline_plus_hash_only`)
 > post-date the manifest and are **not** v0.6 core; they appear only in
 > the clearly-labeled experimental extension at §14. `Constraint.severity`
@@ -260,12 +260,9 @@ The v0.6 validator enforces the cumulative rule set: the structural and
 reference rules inherited from v0.2–v0.4, the six `<Concluding>`-scoped
 rules from v0.5, and the v0.6 content-addressable additions. The
 reference implementation in `scholialang/src/scholialang/validator.py`
-is the source; `RULE_NAMES` is the machine-readable list and the spec's
-stated `SCHOLIA_VALIDATOR_VERSION` is `0.6.1` (the v0.6.1 reconciliation
-release — optional `status` on `<Concluding>` + rule-8 agreement). The
-published `scholialang` v0.6.0 build stamps `0.6.0`; the build that lands
-this reconciliation stamps `0.6.1`. The change is additive: v0.6.0 traces
-stay valid and the rule set is otherwise unchanged.
+must conform to this document and the shared suites. `RULE_NAMES` is
+the machine-readable list and the spec's stated
+`SCHOLIA_VALIDATOR_VERSION` is `0.6.2`.
 
 ### §4.1 Existing structural rules (carried forward)
 
@@ -278,8 +275,26 @@ stay valid and the rule set is otherwise unchanged.
    (see §3.4 resolution-boundary note for the inline-operator caveat).
 3. **`decision_closed`** — every `<Deciding>` produces a `<Finding>`
    that names a chosen branch.
-4. **`action_recorded`** — every `<Action>` is followed by or contains
-   a `<Finding>`.
+4. **`action_recorded`** — every `<Action>` produces an explicit result.
+   A result is accepted when it is:
+   - a nested descendant `<Finding>` or `<Concluding>` at any depth;
+   - an immediate `<Finding>` or `<Concluding>` sibling in the same
+     `<Step>`;
+   - a later same-trace `<Finding>` that directly `REFER`s the Action;
+   - a later same-trace `<Finding>` that `REFER`s an `<Observation>` or
+     `<Evidence>` which directly `REFER`s the Action;
+   - a later same-trace `<Concluding>` that directly `REFER`s the Action
+     and declares `for_goal`; or
+   - represented by a graph edge with relation `records_result`
+     targeting the Action.
+
+   For a non-immediate result, chronological order alone is
+   insufficient. The provenance link must be explicit. The graph input
+   is optional and transport-neutral: implementations may expose an
+   object, callback, or indexed edge set as long as the validator can
+   answer whether a `records_result` edge targets an Action. The shared
+   positive and negative contract is
+   `conformance/v0.6.2/action_recorded.json`.
 5. **`hypothesis_evaluated`** — every `<Hypothesis>` has linked
    `<Evidence>` or explicit `<Uncertainty>`.
 6. **`retract_consistent`** — every `<Retract>` references an existing
@@ -367,16 +382,16 @@ Validators return a `ValidationResult` exposing:
     "warnings": [{"rule": str, "atom_id": str, "message": str}, ...],
     "errors_by_rule":   {rule: [ValidationError, ...], ...},
     "warnings_by_rule": {rule: [ValidationWarning, ...], ...},
-    "scholia_validator_version": "0.6.1",  # "0.6.0" on the pre-reconciliation build
+    "scholia_validator_version": "0.6.2",
 }
 ```
 
 Unchanged in shape from v0.5 (`errors` / `warnings` arrays with
 per-violation `rule` / `atom_id` / `message`). v0.6 adds the
 `canonical_id_well_formed` rule name to the breakdown and stamps the
-validator version: `0.6.1` on the reconciliation build (this spec), or
-`0.6.0` on the pre-reconciliation v0.6.0 build. The breakdown shape is
-identical across both.
+validator version `0.6.2` on the cross-step Rule-4 build. Earlier
+point-release builds stamp their own versions (`0.6.0` or `0.6.1`).
+The breakdown shape is identical across them.
 
 ### §4.5 Validity definition
 
@@ -410,12 +425,15 @@ paths — see §13.3 for the full resolver.)
 
 ## §6 Composition rules
 
-(Unchanged from v0.5 except for the additive canonical-id form.)
+(Unchanged from v0.5 except for the additive canonical-id form and the
+v0.6.2 cross-step Rule-4 correction.)
 
 - `<Thinking>` can contain `<Storing/>`, `<Print/>`, hypotheses, inline
   operators, and prose.
 - `<Observation>` may carry `timestamp`, `location`, and `confidence`.
-- `<Action>` may carry `timestamp` and must produce a `<Finding>`.
+- `<Action>` may carry `timestamp` and must produce a result
+  `<Finding>`/`<Concluding>` through one of the nested, immediate,
+  explicitly linked later, or `records_result` graph forms in §4.1.
 - `<Deciding>` must enumerate options and produce a `<Finding>`
   declaring the chosen option.
 - `<Concluding>` must declare `for_goal`, contain at least one `REFER:`
@@ -547,7 +565,8 @@ is an explicit v0.7 non-goal; do not assume it.
 - **Added:** `canonical_id_well_formed` (hard-fail; vacuous on
   `None`). **Modified:** `reference_complete` resolves canonical_id
   targets (§4.3). `SCHOLIA_VALIDATOR_VERSION` → `0.6.0` (v0.6.0 build);
-  → `0.6.1` on the v0.6.1 reconciliation build (§10.10).
+  → `0.6.1` on the v0.6.1 reconciliation build (§10.10); → `0.6.2`
+  on the v0.6.2 Rule-4 correction build (§10.11).
 
 ### §10.8 `Finding.for_goal` disposition (RECONCILIATION)
 
@@ -590,6 +609,29 @@ tooling stay valid; nothing is deprecated. It contains exactly:
 No atom-kind changes; no other normative edits. See
 `docs/scholia/v06.0-to-v06.1-migration.md` for the migration note and the
 downstream propagation checklist.
+
+### §10.11 v0.6.1 → v0.6.2 `action_recorded` correction (NEW)
+
+v0.6.2 corrects Rule 4 for recursive traces that place a causally linked
+result in a later Step:
+
+1. A later `<Finding>` may directly `REFER` the Action.
+2. A later `<Finding>` may indirectly record the Action through one
+   `<Observation>` or `<Evidence>` hop, provided that intermediate atom
+   directly `REFER`s the Action.
+3. A later `<Concluding>` may record the Action when it directly
+   `REFER`s the Action and closes a Goal via `for_goal`.
+4. A generic graph view may record the relationship with a
+   `records_result` edge targeting the Action.
+5. Chronological order alone does not satisfy a non-immediate result.
+
+Nested and immediate same-Step result forms remain valid. No atom,
+attribute, operator, parser, or report-shape change is introduced. The
+version stamps `SCHOLIA_VALIDATOR_VERSION = "0.6.2"`.
+
+The canonical positive/negative cases live in
+`conformance/v0.6.2/action_recorded.json`; see
+`docs/scholia/v06.1-to-v06.2-migration.md` for adapter guidance.
 
 ---
 
@@ -892,6 +934,12 @@ Decision / notes: _______________________________________________
 - **Migration doc** (`docs/scholia/v05-to-v06-migration.md`) — recipes
   for emitters, validators, consumers, and archival traces across the
   v0.5/v0.6 boundary, plus the `for_goal` disposition.
+- **v0.6.2 migration doc**
+  (`docs/scholia/v06.1-to-v06.2-migration.md`) — Rule-4 porting and
+  downstream release guidance.
+- **v0.6.2 conformance suite**
+  (`conformance/v0.6.2/action_recorded.json`) — shared positive and
+  negative cross-implementation expectations for `action_recorded`.
 - **Examples** (`examples/v06/`) — v0.6 traces exercising `canonical_id`,
   a `REFER:sha256` cross-trace reference, and a prelude sample per core
   mode; validated against the published `scholialang` v0.6 validator.
