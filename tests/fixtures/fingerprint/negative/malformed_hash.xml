@@ -1,0 +1,19 @@
+<!--
+  NEGATIVE — malformed_hash  (fails at the NOTATION layer)
+
+  The fingerprint value is not `<algo>:<hex>`: 'sha256:NOTHEX!!' contains
+  non-hex characters. `fingerprint_well_formed` (spec §3.2) HARD-FAILS on it —
+  no source access is needed; the value is malformed on its face.
+
+  The rest of the trace is well-formed: stripping the fingerprint attribute
+  yields a valid trace. The ONLY defect is the malformed fingerprint value,
+  which is what makes this a clean negative for the well-formedness rule.
+
+  Expected verdict `malformed` — see manifest.yaml.
+-->
+<Step id="s1" name="malformed fingerprint value">
+  <Goal id="G_01" scope="trace" priority="required">Attempt to fingerprint foo() with a bad hash.</Goal>
+  <Observation id="Obs_01" location="src/example/foo.py:8:10" fingerprint="sha256:NOTHEX!!">foo(): malformed fingerprint.</Observation>
+  <Finding id="F_01" status="unmet">Fingerprint value is not well-formed.</Finding>
+  <Concluding id="C_01" for_goal="G_01" status="unmet">REFER:Obs_01 AND REFER:F_01 — the fingerprint value is malformed.</Concluding>
+</Step>

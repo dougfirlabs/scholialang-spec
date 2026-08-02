@@ -1,0 +1,21 @@
+<!--
+  NEGATIVE — stale_fingerprint  (fails at the CONSUMER re-verification layer)
+
+  The fingerprint is well-formed (notation-valid), but the fingerprinted
+  content is GONE. Against sources/foo_v3_edited.py, foo()'s body was edited, so
+  the fingerprint matches neither the span at `location` nor anywhere else in
+  the file.
+
+  This is NOT a notation failure — `fingerprint_well_formed` passes. A consumer
+  recomputes, finds no match, and returns `stale`: the trace's claim about foo()
+  must not be trusted verbatim. This is the case the attribute exists to CATCH
+  (an un-fingerprinted location would silently mislead).
+
+  Expected verdict `stale` — see manifest.yaml.
+-->
+<Step id="s1" name="fingerprinted content no longer present">
+  <Goal id="G_01" scope="trace" priority="required">Re-verify foo() against an edited source.</Goal>
+  <Observation id="Obs_01" location="src/example/foo.py:8:10" fingerprint="sha256:8f4a9d2c1b3e">foo(): claim authored against v1.</Observation>
+  <Finding id="F_01" status="unmet">Fingerprint matches nothing in the edited source.</Finding>
+  <Concluding id="C_01" for_goal="G_01" status="unmet">REFER:Obs_01 AND REFER:F_01 — the claim is stale after the edit.</Concluding>
+</Step>

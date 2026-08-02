@@ -1,0 +1,24 @@
+<!--
+  POSITIVE — ignore_if_absent  (the older-validator-tolerance demonstrator)
+
+  This trace MIXES location-bearing atoms:
+    * Obs_01 carries a fingerprint (a re-verification claim).
+    * Obs_02 carries location but NO fingerprint (no claim — the pre-revision
+      shape, still fully valid).
+
+  Two things the fixture proves (spec §4 / §4.1):
+    1. Absence is valid: Obs_02 without fingerprint validates exactly as today.
+    2. Non-load-bearing: NO atom REFERs the fingerprint, so stripping every
+       fingerprint attribute yields a trace that is byte-valid under the
+       CURRENT strict validator. The fingerprint can be dropped losslessly.
+
+  The accompanying fixtures test strips fingerprint= and asserts the stripped
+  trace parses + validates clean under the published scholialang v0.6 validator.
+-->
+<Step id="s1" name="mixed fingerprinted and plain observations">
+  <Goal id="G_01" scope="trace" priority="required">Record both a re-verifiable and a plain code observation.</Goal>
+  <Observation id="Obs_01" location="src/example/foo.py:8:10" fingerprint="sha256:8f4a9d2c1b3e">foo(): re-verifiable claim.</Observation>
+  <Observation id="Obs_02" location="src/example/foo.py:13:14">bar(): plain location, no fingerprint claim.</Observation>
+  <Finding id="F_01" status="met">One fingerprinted, one plain; both valid.</Finding>
+  <Concluding id="C_01" for_goal="G_01" status="met">REFER:Obs_01 AND REFER:Obs_02 — fingerprint is optional and additive.</Concluding>
+</Step>
