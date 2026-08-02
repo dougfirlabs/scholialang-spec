@@ -19,6 +19,51 @@
   adoption is at most a 0.6.x additive point revision and is gated on
   explicit operator contract approval.
 
+## v0.6.2
+
+- Corrects validator Rule 4, `action_recorded`, for recursive traces:
+  a later cross-step Finding may record an Action through a direct
+  `REFER`, or through one Observation/Evidence `REFER` hop.
+- Accepts a later goal-closing Concluding that directly `REFER`s the
+  Action and a generic `records_result` graph edge targeting the Action.
+- Keeps provenance strict: chronological order alone is insufficient
+  for a non-immediate result. Unrelated, order-only, and unclosed Action
+  cases remain invalid.
+- Adds the shared, self-describing conformance suite
+  `conformance/v0.6.2/action_recorded.json` with nine positive and four
+  negative cases, including explicit nested and legacy immediate-sibling
+  coverage, plus implementation-independent integrity tests.
+- Bumps the stated `SCHOLIA_VALIDATOR_VERSION` to `0.6.2` and adds
+  `docs/scholia/v06.1-to-v06.2-migration.md`.
+- No atom, attribute, operator, parser, or validator report-shape
+  changes. Existing nested and immediate same-Step result forms remain
+  valid.
+
+## v0.6.1
+
+- **Additive, non-breaking.** v0.6.0 traces and tooling stay valid;
+  nothing is deprecated.
+- Adds optional `status` (`met` / `unmet` / `partially_met`) to
+  `<Concluding>` — the completion verdict on a goal-close, distinct from
+  `confidence` (certainty) and `criticality` (load-bearing rank). A
+  status-less `<Concluding>` stays valid. Updates `SCHOLIA_v0.6_SPEC.md`
+  §6, `reference/atoms_index.yaml`, and regenerates `notation-reference.md`.
+- Reconciles validator rule 8 (`goal_declared`): the rule and the
+  `<Concluding>` attribute table now agree that `status` is an allowed
+  attribute, resolving the v0.6.0 contradiction (rule named a `status`
+  the table omitted, which the reference parser rejected). Adds a
+  spec-consistency assertion for the agreement.
+- Bumps the spec's stated `SCHOLIA_VALIDATOR_VERSION` `0.6.0` → `0.6.1`
+  (§4, §10.7, §10.10). The published v0.6.0 build stamps `0.6.0`; the
+  reconciliation build stamps `0.6.1`.
+- Adds `compatibility-manifest.json` (golden-records) with a v0.6.1
+  golden record for a status-bearing `<Concluding>`, appended without
+  mutating the 2026-06-06 freeze; `spec_version` stays `"Scholia v0.6"`.
+- Adds `docs/scholia/v06.0-to-v06.1-migration.md`.
+- Extends the public-spec hygiene leak guard to scan `src/`, `tests/`,
+  and `scripts/` (in addition to `docs/`) with a guard self-test, and
+  scrubs internal references from `scripts/` and `tests/`.
+
 ## v0.6.0
 
 - Adds canonical `docs/scholia/SCHOLIA_v0.6_SPEC.md` (content-addressable

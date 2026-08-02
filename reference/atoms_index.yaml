@@ -96,11 +96,12 @@ atoms:
     attributes:
       - { name: id,          type: string,                                                                  required: false, notes: "trace-scoped identifier." }
       - { name: for_goal,    type: string,                                                                  required: true,  notes: "id of the Goal this Concluding closes." }
-      - { name: confidence,  type: "float [0,1]",                                                           required: false, notes: "declared epistemic strength of the close." }
-      - { name: criticality, type: "incidental | bridge | ledger | verifier | kernel",                      required: false, notes: "declared closure-tier; defaults to max(cited findings' criticality)." }
+      - { name: status,      type: "met | unmet | partially_met",                                           required: false, notes: "NEW in v0.6.1 — completion verdict on the goal-close (distinct from confidence/criticality). Optional; a status-less Concluding stays valid. Required only to satisfy goal_declared (rule 8) when closing a priority=required Goal." }
+      - { name: confidence,  type: "float [0,1]",                                                           required: false, notes: "declared epistemic strength of the close (certainty), not the completion verdict." }
+      - { name: criticality, type: "incidental | bridge | ledger | verifier | kernel",                      required: false, notes: "declared closure-tier (load-bearing rank), not the completion verdict; defaults to max(cited findings' criticality)." }
     body: "free-text containing one or more REFER: operators."
     example: |
-      <Concluding id="C_01" for_goal="G_01" confidence="0.85" criticality="ledger">
+      <Concluding id="C_01" for_goal="G_01" status="met" confidence="0.85" criticality="ledger">
         REFER:F_01 AND REFER:F_02 IMPLIES the migration is complete.
       </Concluding>
     applies_rules: [for_goal_resolves, refer_at_least_one, criticality_non_decreasing, no_action_in_concluding, single_active_concluding_per_goal, min_confidence_ceiling, "Goal-declared"]

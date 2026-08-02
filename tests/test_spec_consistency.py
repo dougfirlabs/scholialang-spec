@@ -4,7 +4,7 @@ Targets the canonical v0.6 spec (the v0.5 spec is superseded/archived).
 The atom catalog is unchanged from v0.5 (32 kinds); v0.6 is additive at
 the substrate layer (canonical_id base attribute, registry, prelude).
 
-Four assertions per the spec-authoring hard_constraints[TESTS]:
+Four core consistency assertions:
 
 a) Every atom in scholialang.atoms._ATOM_CLASSES appears in
    SCHOLIA_v0.6_SPEC.md §2.
@@ -34,11 +34,11 @@ import yaml
 # ── Path discovery ──────────────────────────────────────────────────
 #
 # This test file lives at
-# ``scholialang-spec/tests/test_spec_consistency.py``. In the staging
-# layout (this PRD), the path is
-# ``opentalon/docs/papers/scholia-v2/spec-stage/scholialang-spec/tests/``.
-# In the post-relocation sibling-repo layout, the path is
-# ``scholialang-spec/tests/``. The fixtures below resolve both layouts.
+# ``scholialang-spec/tests/test_spec_consistency.py``. Two layouts are
+# resolved by the fixtures below: the canonical sibling-repo layout
+# (``scholialang-spec/tests/`` with ``scholialang`` a sibling), and a
+# nested-checkout fallback where the spec repo sits several directories
+# deep inside a larger tree with ``scholialang`` near that tree's root.
 
 
 def _spec_repo_root() -> Path:
@@ -208,6 +208,75 @@ def test_no_orphan_in_canonical_surfaces(
         assert pattern not in body, (
             f"orphan tag {pattern} appears in {label} — "
             "current canonical must not name this atom."
+        )
+
+
+# ── (d2) — rule 8 (goal_declared) agrees with the Concluding table ──
+#
+# v0.6.1 reconciliation: the goal_declared validator rule names a
+# ``status`` on the closing ``<Concluding>``; the ``<Concluding>``
+# attribute table must therefore declare ``status`` with a matching
+# enum. This asserts the two surfaces agree so the v0.6.0 contradiction
+# (rule named a status the table omitted) cannot recur.
+
+_CONCLUDING_STATUS_ENUM: tuple[str, ...] = ("met", "unmet", "partially_met")
+
+
+def _concluding_attrs(atoms_index: dict) -> dict:
+    for atom in atoms_index["atoms"]:
+        if atom["kind"] == "Concluding":
+            return {a["name"]: a for a in atom.get("attributes", [])}
+    raise AssertionError("Concluding atom missing from atoms_index.yaml")
+
+
+def _rule_eight_text(spec_text: str) -> str:
+    # Rule 8 is the ``goal_declared`` bullet in §4.1; slice from its
+    # marker to the next numbered rule (``9.``).
+    begin = spec_text.find("**`goal_declared`**")
+    assert begin != -1, "spec doc missing the goal_declared (rule 8) bullet"
+    end = spec_text.find("\n9. ", begin)
+    assert end != -1, "could not bound rule 8 before rule 9 in the spec"
+    return spec_text[begin:end]
+
+
+def test_concluding_table_declares_status(atoms_index: dict) -> None:
+    attrs = _concluding_attrs(atoms_index)
+    assert "status" in attrs, (
+        "the <Concluding> attribute table must declare `status` "
+        "(v0.6.1) so it agrees with goal_declared (rule 8)."
+    )
+    status_type = attrs["status"]["type"]
+    for value in _CONCLUDING_STATUS_ENUM:
+        assert value in status_type, (
+            f"<Concluding> status enum is missing {value!r}: {status_type!r}"
+        )
+    assert attrs["status"].get("required") is False, (
+        "<Concluding> status must be OPTIONAL (additive/non-breaking)."
+    )
+
+
+def test_rule8_and_concluding_status_agree(
+    atoms_index: dict, spec_text: str
+) -> None:
+    attrs = _concluding_attrs(atoms_index)
+    rule8 = _rule_eight_text(spec_text)
+    # Rule 8 must reference a status on the closing Concluding.
+    assert "status" in rule8 and "Concluding" in rule8, (
+        "goal_declared (rule 8) must name `status` on the closing "
+        "<Concluding>."
+    )
+    # Every value in the Concluding attribute-table enum must appear in
+    # rule 8 — the rule cannot allow/expect a value the table omits, nor
+    # vice versa, for the Concluding enum.
+    status_type = attrs["status"]["type"]
+    table_values = {v.strip() for v in status_type.split("|")}
+    assert table_values == set(_CONCLUDING_STATUS_ENUM), (
+        f"<Concluding> status enum drifted: {sorted(table_values)}"
+    )
+    for value in _CONCLUDING_STATUS_ENUM:
+        assert value in rule8, (
+            f"rule 8 omits the <Concluding> status value {value!r} that the "
+            "attribute table declares — the two surfaces disagree."
         )
 
 

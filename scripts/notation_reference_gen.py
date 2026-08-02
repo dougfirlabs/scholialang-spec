@@ -12,8 +12,7 @@ Usage::
 
 ``--check`` re-renders from YAML and asserts the on-disk file matches.
 
-PRD: rsi-scholia-v0.5-03-spec-docs-reconciliation, story v05-docs-01.
-Updated for v0.6: scholia-v0.6-pub-03-spec-authoring, story pub-03-02.
+Introduced for the v0.5 spec-docs reconciliation; updated for v0.6.
 """
 from __future__ import annotations
 

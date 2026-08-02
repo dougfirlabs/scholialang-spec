@@ -5,6 +5,10 @@ A small corpus exercising the v0.6 content-addressable substrate. Every
 published `scholialang` v0.6 validator. Reusable by the website gallery
 (PRD-06).
 
+Validator point-release contracts, including the v0.6.2
+`action_recorded` positive/negative suite, live separately under
+[`../../conformance/`](../../conformance/).
+
 Spec: [`../../docs/scholia/SCHOLIA_v0.6_SPEC.md`](../../docs/scholia/SCHOLIA_v0.6_SPEC.md).
 
 ## Traces

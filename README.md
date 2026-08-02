@@ -48,6 +48,8 @@ should point readers here for normative v0.6 behavior.
 - `docs/notation/` - earlier notation reference, extensions, and policy docs
 - `examples/v06/` - v0.6 fixture traces (canonical_id, REFER:sha256, the
   3 core prelude modes)
+- `conformance/v0.6.2/` - shared positive/negative validator fixtures
+  for point-release semantic contracts
 - `examples/` - fixture traces used by reference implementations
 
 ## Related Repositories
@@ -68,7 +70,12 @@ should point readers here for normative v0.6 behavior.
 
 ## Version
 
-Current language version: `v0.6.0`.
+Current language version: `v0.6.2`.
+
+v0.6.2 corrects `action_recorded` so explicitly linked results may
+appear in later Steps while unrelated or order-only later Findings
+remain invalid. See
+[`conformance/v0.6.2/action_recorded.json`](conformance/v0.6.2/action_recorded.json).
 
 `docs/scholia/SCHOLIA_v0.5_SPEC.md` is superseded by v0.6 and preserved
 with a banner. `docs/scholia/SCHOLIA_v0.4_SPEC.md` is superseded; the

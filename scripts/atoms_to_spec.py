@@ -13,8 +13,7 @@ Usage::
     python scripts/atoms_to_spec.py --out section2.md
     python scripts/atoms_to_spec.py --check spec.md  # assert §2 is current
 
-PRD: rsi-scholia-v0.5-03-spec-docs-reconciliation, story v05-docs-00.
-Updated for v0.6: scholia-v0.6-pub-03-spec-authoring, story pub-03-02.
+Introduced for the v0.5 spec-docs reconciliation; updated for v0.6.
 """
 from __future__ import annotations
 
@@ -25,15 +24,16 @@ from pathlib import Path
 
 # Path to the scholialang source. Two layouts are accepted:
 #
-# 1. Sibling-repo layout (post-PRD-03-relocation): scholialang-spec and
+# 1. Sibling-repo layout (the canonical layout): scholialang-spec and
 #    scholialang are siblings under ``~/projects/``. The script sits at
 #    ``scholialang-spec/scripts/atoms_to_spec.py`` and looks for
 #    ``../../scholialang/src``.
-# 2. Staging layout (this PRD's interim location): the script sits at
-#    ``opentalon/docs/papers/scholia-v2/spec-stage/scholialang-spec/scripts/``
-#    and the package lives at ``opentalon/scholialang/src``.
+# 2. Nested-checkout fallback: the spec repo is checked out several
+#    directories deep inside a larger tree, with ``scholialang`` a sibling
+#    near that tree's root.
 #
-# The default tries (1) first, then (2), then bails.
+# The default tries (1) first, then (2), then bails. Pass
+# ``--scholialang-src`` to override.
 
 
 def _candidate_src_dirs(script_path: Path) -> list[Path]:
@@ -126,7 +126,7 @@ CATEGORY_ORDER: tuple[str, ...] = (
 # One-line semantic per atom — hand-curated. Docstrings on the dataclass
 # are too long for the catalog; this map keeps the single-line shape.
 # Drift between this map and the dataclass is caught by the spec
-# consistency test (PRD-03 story v05-docs-02).
+# consistency test.
 SEMANTIC_FOR_ATOM: dict[str, str] = {
     "Action": "external state change (must produce a Finding).",
     "Alternative": "explicitly rejected option inside a Deciding.",
