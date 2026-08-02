@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased — PROPOSED (awaiting operator contract approval)
+
+- **Proposes** the additive `fingerprint=` attribute on location-bearing
+  atoms (`docs/scholia/FINGERPRINT.md`): an optional `<algo>:<hex>` content
+  hash of the source span named by `location`, letting trace claims about
+  code re-verify mechanically (verifies / rebinds / span_mismatch / stale).
+  The digest itself references 52X-B2's single definition (issue #524) and
+  is **not** redefined here.
+- Specs a single new validator rule, `fingerprint_well_formed` (hard-fail;
+  vacuous when absent) — structural only; re-verification against source is
+  a consumer concern. Ignore-if-absent follows the `canonical_id` precedent.
+- Adds a shared, single-copy fixture corpus at
+  `tests/fixtures/fingerprint/` (positive: valid, moved-symbol rebind,
+  ignore-if-absent; negative: malformed hash, span mismatch, stale) plus a
+  machine-readable `manifest.yaml`, consumed by `tests/test_fingerprint_fixtures.py`.
+- **Nothing merged into the canonical v0.6 spec.** This is a proposal PR;
+  adoption is at most a 0.6.x additive point revision and is gated on
+  explicit operator contract approval.
+
 ## v0.6.2
 
 - Corrects validator Rule 4, `action_recorded`, for recursive traces:

@@ -1,0 +1,18 @@
+<!--
+  POSITIVE — moved_symbol_rebind
+
+  Same trace as valid_fingerprint, re-verified against sources/foo_v2_moved.py.
+  There foo() is byte-identical to v1 but has MOVED to lines 14:16. The span at
+  `location` (8:10) is stale, yet the fingerprint still matches the symbol at
+  its new span, so a consumer REBINDS location and the claim survives the edit.
+
+  Notation validity is identical to valid_fingerprint (this is what the
+  attribute is FOR: surviving line drift). Expected verdict `rebinds` — see
+  manifest.yaml. Stripping the fingerprint is lossless (spec §4.1).
+-->
+<Step id="s1" name="foo entrypoint survives a move">
+  <Goal id="G_01" scope="trace" priority="required">Confirm foo() is the validated entrypoint despite line drift.</Goal>
+  <Observation id="Obs_01" location="src/example/foo.py:8:10" fingerprint="sha256:8f4a9d2c1b3e">Exports function foo; validated entrypoint.</Observation>
+  <Finding id="F_01" status="met">foo() fingerprint matches a moved span; location rebinds to 14:16.</Finding>
+  <Concluding id="C_01" for_goal="G_01" status="met">REFER:Obs_01 AND REFER:F_01 — the claim survives the move via fingerprint rebind.</Concluding>
+</Step>

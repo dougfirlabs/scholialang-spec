@@ -1,0 +1,89 @@
+# Shared fingerprint= fixture corpus — machine-readable index.
+#
+# One copy, consumed by the scholialang reference suite and any downstream
+# implementation suite (no forks). Proposal: docs/scholia/FINGERPRINT.md.
+#
+# Two failure layers are distinguished (spec §3 vs §5):
+#   * notation   — decided by the `fingerprint_well_formed` rule on the trace
+#                  alone (no source access). Executable today by regex.
+#   * consumer   — decided by recomputing the fingerprint over source, using
+#                  52X-B2's single digest definition (issue #524). Requires a
+#                  source tree; the paired `source:` snippet is the input.
+#
+# The fingerprint hex values in the traces are ILLUSTRATIVE placeholders — the
+# real digest is 52X-B2's to compute, and is deliberately NOT reproduced here
+# (hard constraint: one definition, not redefined). Consumer-layer verdicts are
+# therefore DECLARED intent, executed by an implementation wired to that
+# definition; they are not recomputed by this repo's notation validator.
+
+version: "0.6.x-proposed"
+attribute: fingerprint
+well_formed_regex: '^[a-z0-9]+:[0-9a-f]+$'
+
+fixtures:
+  - name: valid_fingerprint
+    trace: positive/valid_fingerprint.xml
+    source: sources/foo_v1.py
+    layer: consumer
+    expected: verifies
+    notation_valid: true          # fingerprint_well_formed passes; strips clean
+    reason: >-
+      Span at location (8:10) holds foo() and the fingerprint matches; the
+      claim re-verifies as-is.
+
+  - name: moved_symbol_rebind
+    trace: positive/moved_symbol_rebind.xml
+    source: sources/foo_v2_moved.py
+    layer: consumer
+    expected: rebinds
+    notation_valid: true
+    reason: >-
+      foo() moved to 14:16 but is byte-identical; the location line span is
+      stale yet the fingerprint still matches, so the consumer rebinds location
+      and the claim survives.
+
+  - name: ignore_if_absent
+    trace: positive/ignore_if_absent.xml
+    source: null
+    layer: notation
+    expected: verifies
+    notation_valid: true
+    demonstrates: older_validator_tolerance
+    reason: >-
+      Mixes a fingerprinted and a plain location-bearing atom; absence carries
+      no claim and stays valid, and stripping every fingerprint yields a trace
+      that is byte-valid under the current pre-revision strict validator
+      (non-load-bearing).
+
+  - name: malformed_hash
+    trace: negative/malformed_hash.xml
+    source: null
+    layer: notation
+    expected: malformed
+    notation_valid: false         # fingerprint_well_formed HARD-FAILS
+    reason: >-
+      Fingerprint value 'sha256:NOTHEX!!' is not <algo>:<hex>; fails
+      fingerprint_well_formed before any source check. Strips clean (the only
+      defect is the fingerprint value).
+
+  - name: span_mismatch
+    trace: negative/span_mismatch.xml
+    source: sources/foo_v1.py
+    layer: consumer
+    expected: span_mismatch
+    notation_valid: true          # well-formed value + location present
+    reason: >-
+      location (13:14) points at bar(), not the fingerprinted foo(); span and
+      fingerprint disagree at authoring time. Not a notation failure — detected
+      by a consumer recomputing over the span.
+
+  - name: stale_fingerprint
+    trace: negative/stale_fingerprint.xml
+    source: sources/foo_v3_edited.py
+    layer: consumer
+    expected: stale
+    notation_valid: true
+    reason: >-
+      foo()'s body was edited; the fingerprint matches nothing in the file.
+      Consumer re-verification returns stale — the claim must not be trusted
+      verbatim. This is the case the attribute exists to catch.

@@ -1,0 +1,21 @@
+<!--
+  POSITIVE — valid_fingerprint
+
+  An Observation carries BOTH location and a well-formed fingerprint.
+  Against sources/foo_v1.py the span (8:10) holds foo() and the fingerprint
+  matches: consumer re-verification returns `verifies`.
+
+  Notation validity: `fingerprint_well_formed` passes (present + well-formed +
+  location present). Stripping the fingerprint attribute yields a trace that is
+  byte-valid under the CURRENT (pre-revision) strict validator — the
+  ignore-if-absent / non-load-bearing guarantee (spec §4.1).
+
+  The fingerprint hex is illustrative (see manifest.yaml). See
+  docs/scholia/FINGERPRINT.md.
+-->
+<Step id="s1" name="foo is the validated entrypoint">
+  <Goal id="G_01" scope="trace" priority="required">Confirm foo() is the validated entrypoint.</Goal>
+  <Observation id="Obs_01" location="src/example/foo.py:8:10" fingerprint="sha256:8f4a9d2c1b3e">Exports function foo; validated entrypoint.</Observation>
+  <Finding id="F_01" status="met">foo() found at the fingerprinted span.</Finding>
+  <Concluding id="C_01" for_goal="G_01" status="met">REFER:Obs_01 AND REFER:F_01 confirm foo() is the entrypoint.</Concluding>
+</Step>
