@@ -1,7 +1,7 @@
 # Shared fingerprint= fixture corpus — machine-readable index.
 #
 # One copy, consumed by the scholialang reference suite and any downstream
-# implementation suite (no forks). Proposal: docs/scholia/FINGERPRINT.md.
+# implementation suite (no forks). Contract: docs/scholia/FINGERPRINT.md.
 #
 # Two failure layers are distinguished (spec §3 vs §5):
 #   * notation   — decided by the `fingerprint_well_formed` rule on the trace
@@ -16,7 +16,7 @@
 # therefore DECLARED intent, executed by an implementation wired to that
 # definition; they are not recomputed by this repo's notation validator.
 
-version: "0.6.x-proposed"
+version: "0.6.x"
 attribute: fingerprint
 well_formed_regex: '^[a-z0-9]+:[0-9a-f]+$'
 

@@ -1,9 +1,11 @@
 # Scholia `fingerprint=` — additive attribute for re-verifiable code claims
 
-**Status:** PROPOSED — awaiting operator contract approval. NOT part of
-the canonical v0.6 spec until this PR is approved and merged. At most a
-**0.6.x** point revision (additive; see §7).
-**Date:** 2026-08-02.
+**Status:** APPROVED and MERGED. Part of the canonical spec as an additive
+substrate revision (see §7): at most a **0.6.x** point revision, adding no
+atom kind and changing no existing attribute's meaning. The reference
+implementation ships the `fingerprint_well_formed` rule as of scholialang
+`0.7.1`; scholialang-mcp reaches parity at the same version.
+**Date:** 2026-08-02. **Contract approved:** 2026-08-02 (see §9).
 **Scope:** one optional attribute (`fingerprint=`) on location-bearing
 atoms, its well-formedness rule, its ignore-if-absent semantics, and a
 shared positive/negative fixture corpus.
@@ -158,7 +160,7 @@ implementation can execute them end-to-end — see the fixture
 Shared, single-copy fixtures live at
 [`../../tests/fixtures/fingerprint/`](../../tests/fixtures/fingerprint/):
 
-- `positive/` — traces the proposed rule accepts (`valid_fingerprint`,
+- `positive/` — traces the rule accepts (`valid_fingerprint`,
   `moved_symbol_rebind`, `ignore_if_absent`).
 - `negative/` — traces or claims that fail (`malformed_hash` fails
   `fingerprint_well_formed`; `span_mismatch` and `stale_fingerprint`
@@ -201,9 +203,26 @@ revision".
 - **Not** extending `location` to new atom kinds (that is a separate
   proposal); `fingerprint` simply tracks wherever `location` is legal.
 
-## §9 Operator contract-approval gate
+## §9 Operator contract-approval gate (satisfied)
 
-This document is a **proposal**. Merging it — and any downstream
-implementation of `fingerprint_well_formed` — is gated on explicit
-operator contract approval (see the PR body checklist). Until then the
-canonical v0.6 spec is unchanged and no validator ships the new rule.
+This document was a proposal, and merging it (together with any downstream
+implementation of `fingerprint_well_formed`) was gated on explicit operator
+contract approval. **That gate is satisfied.** The record:
+
+| Step | Where |
+|---|---|
+| Contract approved and merged | this document, on `master` |
+| Shared fixture corpus published | `tests/fixtures/fingerprint/` |
+| Reference validator ships the rule | `scholialang` 0.7.1 |
+| Offline plugin engine reaches parity | `scholialang-mcp` 0.7.1 |
+
+Implementations consume the fixture corpus from this repo rather than
+forking it, and pin the commit they were verified against. Both downstream
+repos carry a `scholialang-spec-ref.txt` for that purpose, so a change to
+the fixtures or to `well_formed_regex` is a deliberate, reviewable pin bump
+rather than a silent drift.
+
+Note for that bump: this status revision moves `master` past the SHA those
+pins currently name. The pins stay valid, since they resolve an exact
+commit; updating them is a separate, optional step and carries no
+behavioral change.
