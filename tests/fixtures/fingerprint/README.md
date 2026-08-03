@@ -1,15 +1,16 @@
 # `fingerprint=` shared fixtures
 
-Positive and negative fixtures for the **proposed** additive
-`fingerprint=` attribute on location-bearing atoms. Spec proposal:
+Positive and negative fixtures for the additive
+`fingerprint=` attribute on location-bearing atoms. Contract:
 [`../../../docs/scholia/FINGERPRINT.md`](../../../docs/scholia/FINGERPRINT.md).
 
 These live **once, here**, for consumption by the `scholialang` reference
 suite and any downstream implementation suite — no forks. The
 machine-readable index is [`manifest.yaml`](manifest.yaml).
 
-> **Status:** PROPOSED — awaiting operator contract approval. Nothing
-> here changes the canonical v0.6 spec until the PR is approved.
+> **Status:** APPROVED and MERGED. The contract is part of the canonical
+> spec as an additive substrate revision; the reference validator ships the
+> `fingerprint_well_formed` rule as of `scholialang` 0.7.1.
 
 ## Layout
 

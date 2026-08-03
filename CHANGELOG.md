@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased — PROPOSED (awaiting operator contract approval)
+## v0.6.x — additive `fingerprint=` revision (contract approved)
 
-- **Proposes** the additive `fingerprint=` attribute on location-bearing
+- **Adds** the additive `fingerprint=` attribute on location-bearing
   atoms (`docs/scholia/FINGERPRINT.md`): an optional `<algo>:<hex>` content
   hash of the source span named by `location`, letting trace claims about
   code re-verify mechanically (verifies / rebinds / span_mismatch / stale).
@@ -15,9 +15,15 @@
   `tests/fixtures/fingerprint/` (positive: valid, moved-symbol rebind,
   ignore-if-absent; negative: malformed hash, span mismatch, stale) plus a
   machine-readable `manifest.yaml`, consumed by `tests/test_fingerprint_fixtures.py`.
-- **Nothing merged into the canonical v0.6 spec.** This is a proposal PR;
-  adoption is at most a 0.6.x additive point revision and is gated on
-  explicit operator contract approval.
+- **Operator contract approval: satisfied** (`FINGERPRINT.md` §9). This is an
+  additive substrate revision, at most a 0.6.x point revision: no atom kind
+  is added, no operator is added, and no existing attribute changes meaning.
+  Every pre-existing trace validates unchanged and keeps its `canonical_id`,
+  which is excluded from the hash by construction.
+- Shipped by `scholialang` 0.7.1 (reference validator) and
+  `scholialang-mcp` 0.7.1 (offline vendored engine). The shared
+  `action_recorded` conformance corpus is a separate axis and stays at
+  v0.6.2; an additive rule revision must keep passing it byte-for-byte.
 
 ## v0.6.2
 
