@@ -31,6 +31,13 @@
       "rule": "action_recorded",
       "path": "conformance/v0.6.2/action_recorded.json",
       "description": "Nine positive and four negative Rule-4 cases covering nested and immediate results, direct and indirect cross-step results, goal-closing Concluding, records_result graph edges, and strict provenance failures."
+    },
+    {
+      "id": "v06_2-constraint-respected",
+      "spec_version": "0.6.2",
+      "rule": "constraint_respected",
+      "path": "conformance/v0.6.2/constraint_respected.json",
+      "description": "Three positive and three negative Rule-7 cases covering articles, token boundaries, trace-order scope, and all three forbidden-phrase forms."
     }
   ],
   "golden_records": [

@@ -46,3 +46,10 @@ expected to emit exactly the stated errors for Rule 4; it need not be
 treated as a parser failure. Implementations may additionally run the
 entire validator and assert that fixtures do not produce unintended
 errors in other rules.
+
+## `constraint_respected.json`
+
+Rule 7's keyword-level linter must distinguish a forbidden action token from
+an article or a substring inside another word. The shared cases pin three
+positive boundaries (including `Never a bare null`) and all three supported
+negative phrase forms: `Never`, `must not`, and `do not`.
