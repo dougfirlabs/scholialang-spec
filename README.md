@@ -72,6 +72,13 @@ should point readers here for normative v0.6 behavior.
 
 Current language version: `v0.6.2`.
 
+This is the **language grammar version**, not the version of every package
+that implements it. The current Python reference implementation and MCP/plugin
+release are `0.7.1`; those packages implement the stable Scholia `v0.6.2`
+grammar plus approved additive validator/tooling revisions. Seeing `v0.6` in
+the spec is therefore expected. Public package and plugin metadata should name
+both axes explicitly instead of describing a package release as “v0.6.”
+
 v0.6.2 corrects `action_recorded` so explicitly linked results may
 appear in later Steps while unrelated or order-only later Findings
 remain invalid. See
