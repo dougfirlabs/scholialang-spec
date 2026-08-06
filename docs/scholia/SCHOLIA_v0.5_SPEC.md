@@ -59,8 +59,9 @@ new validator rules that enforce the substrate's structural promise.
 
 What stays the same as v0.4:
 
-- XML-shaped tags (per the Anthropic HTML-memory convergence — see
-  Scholia ↔ Anthropic notes in the longitudinal benchmarks).
+- XML-shaped tags (a design choice that independently converged with
+  a practitioner finding from within Anthropic, reported by Simon
+  Willison, that HTML/XML-shaped tags work well for LLM memory).
 - Validator + Adjudicator architecture.
 - Fallback semantics (validation failure → prose-only with
   `scholia_fallback: true`).

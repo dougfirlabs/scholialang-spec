@@ -12,8 +12,13 @@
 
 # scholialang-spec
 
-This repository contains the Scholia language specification and
-conformance examples.
+Scholia helps agentic systems preserve reasoning state, use tools
+without quality loss, and reduce context cost across long-horizon work.
+
+This repository is the canonical home for the Scholia language
+specification and conformance examples: the v0.6 syntax,
+content-addressed identity, the DAG registry, the lazy prelude,
+validator rules, and fixture traces.
 
 Scholia is a structured reasoning notation for agent traces. It is
 designed to make reasoning artifacts readable, diffable, validateable,
