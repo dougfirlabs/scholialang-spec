@@ -23,6 +23,7 @@ the manifest declares them as intent. See the fixtures README.
 """
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
@@ -44,10 +45,25 @@ def _spec_repo_root() -> Path:
 
 
 def _scholialang_src() -> Path:
+    # SCHOLIALANG_SRC override mirrors tests/test_spec_consistency.py:
+    # an explicitly supplied source that does not exist is a hard
+    # failure, never a silent fallback to the sibling checkout.
+    override = os.environ.get("SCHOLIALANG_SRC")
+    if override:
+        src = Path(override)
+        if not (src / "scholialang" / "atoms.py").exists():
+            raise FileNotFoundError(
+                f"SCHOLIALANG_SRC={override!r} does not contain "
+                "scholialang/atoms.py — the sibling fallback is not used."
+            )
+        return src
     sibling = _spec_repo_root().parent / "scholialang" / "src"
     if (sibling / "scholialang" / "atoms.py").exists():
         return sibling
-    raise FileNotFoundError(f"scholialang.atoms not found at {sibling}")
+    raise FileNotFoundError(
+        f"scholialang.atoms not found at {sibling} "
+        "(set SCHOLIALANG_SRC to point at the source explicitly)"
+    )
 
 
 @pytest.fixture(scope="module")

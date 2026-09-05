@@ -22,6 +22,7 @@ g) notation_reference_gen --check passes (the generated notation-
 """
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -57,12 +58,27 @@ def _scholialang_src_candidates() -> list[Path]:
 
 
 def _scholialang_src() -> Path:
+    # Explicit override: canonical adjudication supplies the pinned
+    # source via SCHOLIALANG_SRC. An explicitly supplied source that
+    # does not exist is a hard failure — never a silent fallback to a
+    # (possibly stale) sibling checkout.
+    override = os.environ.get("SCHOLIALANG_SRC")
+    if override:
+        src = Path(override)
+        if not (src / "scholialang" / "atoms.py").exists():
+            raise FileNotFoundError(
+                f"SCHOLIALANG_SRC={override!r} does not contain "
+                "scholialang/atoms.py — an explicitly supplied source "
+                "must exist; the sibling fallback is not used."
+            )
+        return src
     for candidate in _scholialang_src_candidates():
         if (candidate / "scholialang" / "atoms.py").exists():
             return candidate
     raise FileNotFoundError(
         "scholialang.atoms not found in any of: "
         + ", ".join(str(p) for p in _scholialang_src_candidates())
+        + " (set SCHOLIALANG_SRC to point at the source explicitly)"
     )
 
 
@@ -84,6 +100,19 @@ def atom_classes() -> dict[str, type]:
     # checks elsewhere in the suite.
     import importlib
     module = importlib.import_module("scholialang.atoms")
+    # Exact imported-module path assertion: sys.path.insert() alone is
+    # insufficient when another test (or an ambient install) already
+    # imported scholialang from a different tree — reject that module
+    # rather than silently validating the wrong source.
+    module_file = getattr(module, "__file__", None)
+    expected = (src / "scholialang" / "atoms.py").resolve()
+    if module_file is None or Path(module_file).resolve() != expected:
+        pytest.fail(
+            f"scholialang.atoms imported from {module_file!r} but the "
+            f"resolved spec source is {expected} — a module from a "
+            "different source was already imported; run this suite in a "
+            "fresh interpreter with SCHOLIALANG_SRC set."
+        )
     return dict(module._ATOM_CLASSES)
 
 
@@ -296,6 +325,29 @@ def test_atoms_index_matches_impl(
     assert atoms_index["total_atoms"] == len(expected) == 32, (
         f"atoms_index.total_atoms={atoms_index['total_atoms']} but "
         f"len(_ATOM_CLASSES)={len(expected)}; both must be 32 at v0.6."
+    )
+
+
+@pytest.mark.parametrize("kind,field,constant", [
+    ("Edge", "type", "V031_EDGE_TYPES"),
+    ("Ref", "type", "V031_REF_TYPES"),
+    ("Effect", "kind", "V031_EFFECT_KINDS"),
+])
+def test_current_projection_preserves_existing_enum_values(
+    atom_classes: dict[str, type], kind: str, field: str, constant: str
+) -> None:
+    # atom_classes has already enforced the exact explicit source origin.
+    # This is existing-implementation parity, not a simulated new-kind validator.
+    import scholialang.atoms as atoms
+
+    assert kind in atom_classes
+    current = yaml.safe_load(
+        (_spec_repo_root() / "reference/v0.7/atoms_index.yaml").read_text()
+    )
+    row = next(row for row in current["atoms"] if row["kind"] == kind)
+    attr = next(attr for attr in row["attributes"] if attr["name"] == field)
+    assert {value.strip() for value in attr["type"].split("|")} == set(
+        getattr(atoms, constant)
     )
 
 
