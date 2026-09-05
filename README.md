@@ -33,6 +33,24 @@ canonical-id-aware `REFER` resolution, migration notes from v0.5, and the
 three finalized lazy-prelude modes. Implementation packages and host tooling
 should point readers here for normative v0.6 behavior.
 
+## Proposed v0.7 candidate (not ratified)
+
+A proposed additive revision — three new semantic atom kinds `<Map>`,
+`<Event>`, `<Task>` (closed catalog 32 → 35) — is recorded for review
+under two distinct version axes: grammar 0.7.0 and package 0.7.3.
+Nothing is tagged or released; **v0.6 remains the canonical contract**
+until the proposal is accepted.
+
+- `docs/scholia/SCHOLIA_v0.7_SPEC.md` - proposed v0.7 spec (candidate)
+- `docs/scholia/v06.2-to-v07-migration.md` - proposed migration notes
+- `reference/v0.7/atoms_index.yaml` - proposed current 35-kind catalog
+  projection (the legacy 32-kind `reference/atoms_index.yaml` is
+  preserved unchanged)
+- `reference/v0.7/notation-reference.md` - generated per-atom reference
+  for the proposed catalog
+- `conformance/v0.7/semantic_atoms.json` - self-describing semantic
+  conformance suite for the proposal
+
 ## Contents
 
 - `docs/scholia/SCHOLIA_v0.6_SPEC.md` - canonical Scholia v0.6 spec

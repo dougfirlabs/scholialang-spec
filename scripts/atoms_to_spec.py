@@ -13,6 +13,20 @@ Usage::
     python scripts/atoms_to_spec.py --out section2.md
     python scripts/atoms_to_spec.py --check spec.md  # assert §2 is current
 
+Index-driven mode (v0.7 candidate)::
+
+    python scripts/atoms_to_spec.py --index reference/v0.7/atoms_index.yaml
+    python scripts/atoms_to_spec.py --index reference/v0.7/atoms_index.yaml \
+        --check docs/scholia/SCHOLIA_v0.7_SPEC.md
+
+``--index`` derives the ordered kind/category/semantic rows from the
+YAML index WITHOUT importing scholialang, so a proposed catalog can be
+rendered before any implementation exists. ``--index`` and an
+explicitly supplied ``--scholialang-src`` are mutually exclusive; an
+unknown category, duplicate kind, inconsistent declared count, or
+malformed index schema is a hard failure. The implementation-driven
+mode and its rendered legacy text are unchanged.
+
 Introduced for the v0.5 spec-docs reconciliation; updated for v0.6.
 """
 from __future__ import annotations
@@ -169,6 +183,119 @@ def _load_atom_classes(src_dir: Path) -> dict[str, type]:
     return dict(_ATOM_CLASSES)
 
 
+# ── Index-driven mode (no implementation import) ─────────────────────
+
+
+def _load_index_rows(index_path: Path) -> dict:
+    """Load and structurally validate the YAML atom index.
+
+    Returns the parsed index mapping. Any malformed shape is a hard
+    failure — this mode is the producer seam for a not-yet-implemented
+    catalog, so silent tolerance would let a bad catalog generate a
+    plausible-looking spec.
+    """
+    import yaml  # deferred: implementation-driven mode needs no yaml
+
+    if not index_path.exists():
+        raise SystemExit(f"atoms_to_spec: index not found at {index_path!s}.")
+    try:
+        index = yaml.safe_load(index_path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        raise SystemExit(f"atoms_to_spec: unparsable index {index_path!s}: {exc}")
+    if not isinstance(index, dict):
+        raise SystemExit(
+            f"atoms_to_spec: index {index_path!s} must be a mapping, "
+            f"got {type(index).__name__}."
+        )
+    atoms = index.get("atoms")
+    if not isinstance(atoms, list) or not atoms:
+        raise SystemExit(
+            f"atoms_to_spec: index {index_path!s} must carry a nonempty "
+            "'atoms' list."
+        )
+    seen: set[str] = set()
+    for pos, entry in enumerate(atoms):
+        if not isinstance(entry, dict):
+            raise SystemExit(
+                f"atoms_to_spec: atoms[{pos}] is not a mapping."
+            )
+        kind = entry.get("kind")
+        category = entry.get("category")
+        semantic = entry.get("semantic")
+        if not isinstance(kind, str) or not kind:
+            raise SystemExit(
+                f"atoms_to_spec: atoms[{pos}] has no string 'kind'."
+            )
+        if kind in seen:
+            raise SystemExit(
+                f"atoms_to_spec: duplicate kind {kind!r} in the index."
+            )
+        seen.add(kind)
+        if category not in CATEGORY_ORDER:
+            raise SystemExit(
+                f"atoms_to_spec: unknown category {category!r} for kind "
+                f"{kind!r} — legal categories: {', '.join(CATEGORY_ORDER)}."
+            )
+        if not isinstance(semantic, str) or not semantic.strip():
+            raise SystemExit(
+                f"atoms_to_spec: kind {kind!r} has no one-line 'semantic'."
+            )
+    declared = index.get("total_atoms")
+    if declared != len(atoms):
+        raise SystemExit(
+            f"atoms_to_spec: index declares total_atoms={declared!r} but "
+            f"lists {len(atoms)} atoms — the two must agree exactly."
+        )
+    return index
+
+
+def render_section_two_from_index(index: dict) -> str:
+    """Render §2 markdown from the YAML index (no implementation import).
+
+    Grouping and per-category alphabetical order match the
+    implementation-driven renderer; the intro paragraph carries the
+    proposed grammar/package axes instead of claiming ratification.
+    """
+    atoms = index["atoms"]
+    version = index.get("version")
+    grammar = index.get("grammar_version")
+    package = index.get("package_version")
+    new_kinds = sorted(index.get("new_atoms", []) or [])
+    semantic_for = {a["kind"]: a["semantic"] for a in atoms}
+    category_for = {a["kind"]: a["category"] for a in atoms}
+
+    lines: list[str] = []
+    lines.append("## §2 Atom catalog")
+    lines.append("")
+    lines.append(
+        f"The PROPOSED Scholia v{version} closed set is "
+        f"**{len(atoms)} atom kinds**, grouped into seven categories. "
+        "Names are PascalCase. Adding an atom kind is a breaking change "
+        "and requires a spec version bump — which is why this revision "
+        f"declares grammar {grammar} (distinct from package {package}) "
+        "rather than claiming the 0.6.2 grammar unchanged. The 32 legacy "
+        "kinds keep their v0.6 semantics; the additions ("
+        + ", ".join(f"`<{k}>`" for k in new_kinds)
+        + ") are proposed candidates until this specification is accepted."
+    )
+    lines.append("")
+
+    by_category: dict[str, list[str]] = {cat: [] for cat in CATEGORY_ORDER}
+    for kind in sorted(semantic_for):
+        by_category[category_for[kind]].append(kind)
+
+    for cat in CATEGORY_ORDER:
+        kinds = by_category[cat]
+        if not kinds:
+            continue
+        lines.append(f"### §2.{CATEGORY_ORDER.index(cat) + 1} {cat}")
+        lines.append("")
+        for kind in kinds:
+            lines.append(f"- **`<{kind}>`** — {semantic_for[kind]}")
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def render_section_two(atom_classes: dict[str, type]) -> str:
     """Render the §2 markdown block for SCHOLIA_v0.5_SPEC.md."""
     lines: list[str] = []
@@ -249,8 +376,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--scholialang-src",
         type=Path,
-        default=_default_scholialang_src(),
-        help="Path to the scholialang package's src directory.",
+        default=None,
+        help="Path to the scholialang package's src directory "
+             "(implementation-driven mode; mutually exclusive with --index).",
+    )
+    parser.add_argument(
+        "--index",
+        type=Path,
+        default=None,
+        help="Path to an atoms_index.yaml — index-driven mode; renders §2 "
+             "from the index without importing scholialang.",
     )
     parser.add_argument(
         "--out",
@@ -266,8 +401,21 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    atom_classes = _load_atom_classes(args.scholialang_src)
-    rendered = render_section_two(atom_classes)
+    if args.index is not None and args.scholialang_src is not None:
+        parser.error(
+            "--index and --scholialang-src are mutually exclusive: the "
+            "index-driven mode never imports the implementation."
+        )
+
+    if args.index is not None:
+        index = _load_index_rows(args.index)
+        atom_count = len(index["atoms"])
+        rendered = render_section_two_from_index(index)
+    else:
+        src = args.scholialang_src or _default_scholialang_src()
+        atom_classes = _load_atom_classes(src)
+        atom_count = len(atom_classes)
+        rendered = render_section_two(atom_classes)
 
     if args.check is not None:
         spec_text = Path(args.check).read_text(encoding="utf-8")
@@ -287,7 +435,7 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(rendered)
     else:
         args.out.write_text(rendered, encoding="utf-8")
-        print(f"Wrote §2 to {args.out!s} ({len(atom_classes)} atoms).")
+        print(f"Wrote §2 to {args.out!s} ({atom_count} atoms).")
     return 0
 
 

@@ -1,5 +1,34 @@
 # Changelog
 
+## v0.7 — PROPOSED additive Map/Event/Task candidate (unreleased, not ratified)
+
+- **Proposes** three additive semantic atom kinds — `<Map>` (typed
+  mapping value), `<Event>` (recorded occurrence), `<Task>` (declarative
+  work obligation) — growing the closed catalog 32 → 35. Proposed
+  grammar axis 0.7.0; proposed package/validator axis 0.7.3. The two
+  axes are distinct, and **no tag, release, or publication accompanies
+  this entry** — v0.6.2 remains the canonical contract until the
+  proposal is accepted.
+- Adds the proposed spec `docs/scholia/SCHOLIA_v0.7_SPEC.md` (generated
+  §2 via the new index-driven `scripts/atoms_to_spec.py --index` mode,
+  which renders the catalog without importing the implementation), the
+  current projection `reference/v0.7/atoms_index.yaml`, the generated
+  `reference/v0.7/notation-reference.md`, and
+  `docs/scholia/v06.2-to-v07-migration.md`.
+- Adds the self-describing semantic conformance suite
+  `conformance/v0.7/semantic_atoms.json` (registered append-only in
+  `compatibility-manifest.json`): positive/negative fixtures with exact
+  case IDs, parse-vs-validate failure phases, proposed rule codes, and
+  round-trip/identity expectations. Runtime-only obligations are
+  declared for the implementing consumer's suite.
+- The legacy 32-kind projection `reference/atoms_index.yaml`, the
+  v0.6.2 spec, all frozen corpora, and all golden canonical identities
+  are preserved byte-identically. The current projection records three
+  documentation parity repairs for fields already present in
+  implementation 0.7.2 (`Observation.fingerprint`; `Uncertainty.on` and
+  `Confidence.on`, previously loaded as YAML boolean `true` due to an
+  unquoted `on` key).
+
 ## v0.6.x — additive `fingerprint=` revision (contract approved)
 
 - **Adds** the additive `fingerprint=` attribute on location-bearing

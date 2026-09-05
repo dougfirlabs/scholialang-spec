@@ -38,6 +38,14 @@
       "rule": "constraint_respected",
       "path": "conformance/v0.6.2/constraint_respected.json",
       "description": "Three positive and three negative Rule-7 cases covering articles, token boundaries, trace-order scope, and all three forbidden-phrase forms."
+    },
+    {
+      "id": "v07-semantic-atoms-proposed",
+      "spec_version": "0.7.0-proposed",
+      "rule": "semantic-atoms.v1 (multi-rule suite; see its rule_codes metadata)",
+      "path": "conformance/v0.7/semantic_atoms.json",
+      "status": "proposed",
+      "description": "APPENDED for the PROPOSED additive Map/Event/Task candidate (grammar 0.7.0 / package 0.7.3; not ratified, nothing released). Self-describing suite: 106 cases (35 positive / 71 negative) with per-case format, parse-vs-validate failure phase, proposed rule code, required diagnostic subset, and round-trip/canonical-identity expectations, plus declared runtime obligations for implementing consumers. The frozen v0.6 golden records and v0.6.2 suites above are unchanged; append-only."
     }
   ],
   "golden_records": [
