@@ -1,0 +1,38 @@
+{
+  "schema_version": "sch073.producer_receipt.v1",
+  "job_id": "sch073-j02",
+  "repository": "scholialang-mcp",
+  "run_id": "cdd2ddfbf6da46c59e8438bf86df429a",
+  "source_sha": "19aef56b75f17ba387721cf16dccc6402a4dcf42",
+  "original_source_sha": "82cf7ee08b576bc4826fd8e002d373d7018d0043",
+  "cumulative_integration_sha": "b873a37ec138f6d21ad42e7ff2f2da611f2dc810",
+  "verdict": "pass_with_caveats",
+  "hashes": {
+    "standalone_server": "bd5cabc1ecc968d0959ab248f65fbd62bffa35ec3317906f147aad616074d6c2",
+    "permanent_integrity_tests": "fb089d7f217df85046c35dfa0cf68ffe057aea36e5c21f14ae1ec0c0837c7de1",
+    "independent_integrity_probe": "d42d5901d3bbb3a3b74c06dde345bc9a3fb29fdeae69acbf169e32f9923b6a60",
+    "independent_adversarial_probe": "2b6b4053e053a07fe3be816a4dfb52e9df23986720dd073ad1eae4dfb42f11a6"
+  },
+  "tests": {
+    "canonical_passed": 437,
+    "failed": 0,
+    "skipped": 0,
+    "standalone": {
+      "claude": 69,
+      "codex": 28,
+      "ollama": 28
+    },
+    "independent_integrity": 36,
+    "independent_adversarial": 18,
+    "minimum_pytest": "8.1.1_collection437_checks2_pass_negativecontrol_exit4"
+  },
+  "caveats": [
+    "Original test collection hid41Claude cases; cumulative correction restores identity and complete coverage.",
+    "OriginalPOST Nextsteps heading alias is a collector false-negative; substantive content independently reviewed, originalrecord preserved.",
+    "Lifecycle records source control-base instead of candidate; this immutable accepted SHA governs."
+  ],
+  "consumer": "sch073-j03 normative specification producer",
+  "consumption": "coordination prerequisite only; not a claim new core semantics or runtime MCP extensions exist",
+  "protected_merge_authorized": false,
+  "release_authorized": false
+}
