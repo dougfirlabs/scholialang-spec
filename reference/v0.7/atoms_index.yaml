@@ -80,6 +80,12 @@ legacy_field_corrections:
   - { kind: Uncertainty,  attribute: "on",        repair: "unquoted YAML `on` loaded as boolean true; now quoted." }
   - { kind: Confidence,   attribute: "on",        repair: "unquoted YAML `on` loaded as boolean true; now quoted." }
 
+# Existing implementation enums, not new relation semantics. The historical
+# index and reference remain frozen even where their enum prose was stale.
+legacy_enum_corrections:
+  - { kind: Edge, attribute: type, constant: V031_EDGE_TYPES, repair: "match the existing depends_on/referenced_by/imports/references enum." }
+  - { kind: Ref, attribute: type, constant: V031_REF_TYPES, repair: "match the existing test_owner/doc_owner enum." }
+
 # Base attributes carried by every atom kind (see header note above).
 base_attributes:
   - { name: id,           type: string, required: false, notes: "trace-scoped local identifier (all versions). PROPOSED v0.7 per-kind override: REQUIRED on Map/Event/Task with a kind-matching prefix — see those kinds' own tables." }
@@ -546,7 +552,7 @@ atoms:
     semantic: schema-reserved import / dependency edge on an Observation.
     attributes:
       - { name: id,     type: string,                                          required: false, notes: "trace-scoped identifier." }
-      - { name: type,   type: "imports | depends | calls | tests | publishes", required: false, notes: "edge kind (Python field: edge_type)." }
+      - { name: type,   type: "depends_on | referenced_by | imports | references", required: false, notes: "existing edge kind (Python field: edge_type); no new enum values." }
       - { name: target, type: string,                                          required: false, notes: "target symbol / file / atom id." }
     body: "free-text (optional)."
     example: |
@@ -580,7 +586,7 @@ atoms:
     semantic: schema-reserved generic reference sub-element with type / target.
     attributes:
       - { name: id,     type: string,                       required: false, notes: "trace-scoped identifier." }
-      - { name: type,   type: "test_owner | doc | spec",    required: false, notes: "reference kind (Python field: ref_type)." }
+      - { name: type,   type: "test_owner | doc_owner",    required: false, notes: "existing reference kind (Python field: ref_type); no new enum values." }
       - { name: target, type: string,                       required: false, notes: "target id or path." }
     body: "free-text (optional)."
     example: |

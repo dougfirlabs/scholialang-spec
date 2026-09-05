@@ -44,6 +44,12 @@ The proposal adds exactly three atom kinds:
 3. **`<Task>`** — a declarative work obligation with an
    author-asserted verdict (§6). Distinct from any runtime task handle.
 
+The current projection also repairs stale documentation of the existing
+`Edge.type` (`depends_on / referenced_by / imports / references`) and
+`Ref.type` (`test_owner / doc_owner`) enums. These are the existing
+implementation values, not new relation semantics. The historical index
+and generated references remain byte-identical.
+
 Three identity boundaries are load-bearing throughout:
 
 - **Semantic Task ≠ runtime task handle.** A `<Task>` records an
@@ -424,6 +430,17 @@ constructed atom or trace.
 | `semantic_ref_target_kind` | validate | declared reference field dangling or resolving to a non-permitted kind |
 | `canonical_id_well_formed` | validate | existing rule, unchanged: malformed or mismatched claimed `canonical_id` |
 | `grammar_profile_unsupported` | validate | new kind under an explicit legacy 0.6.2 profile, or an unknown profile |
+| `goal_declared` | validate | existing rule, unchanged: a satisfied Task does not close a required Goal |
+| `action_recorded` | validate | existing rule, unchanged: a satisfied Task does not record an Action result |
+
+Numeric decoding remains phase-specific: raw `NaN`, `Infinity`, and
+`-Infinity` are invalid JSON, including inside an XML `entries`
+attribute, and fail decoding with `map_entries_shape`. Legal YAML
+special-float values and true in-memory nonfinite floats instead fail
+typed validation with `map_entries_typed`. JSON scientific notation such
+as `1e0` decodes to a float, not an integer. Duplicate JSON/YAML mapping
+keys, including structural `kind`, `id`, or `entries` keys, fail while
+decoding before any silent overwrite.
 
 An unknown atom *kind* stays a parse-time rejection under the existing
 closed-set behavior (referenced by conformance fixtures as
@@ -441,6 +458,25 @@ behavior cannot be represented safely in static fixtures (forced
 truncated-hash collisions, forbidden-I/O probes, installed-artifact
 probes of an old consumer) are declared there as runtime obligations
 for the implementing consumer's own suite.
+
+The current producer inventory is **204 static cases (36 positive / 168
+negative)**. `conformance/v0.7/coverage-inventory.json` pins every case ID,
+format/family/category count and all 38 adversarial probe families. The
+original 106 case IDs remain in order; two positive evidence payloads
+now declare their referenced Observation/Finding, and 98 cases extend
+coverage without removing earlier controls.
+
+Eleven structured runtime obligations have stable IDs, concrete
+required-case inventories and receipt fields. They remain
+`pending_consumer_execution`, owned by `reference-implementation-consumer`;
+producer integrity tests do not mark them passed. Each consumer receipt
+must bind obligation/case IDs to actual executable node IDs, source/spec
+revisions, corpus/artifact hashes, import origins, commands and outcomes.
+The canonical-reference obligation explicitly names all 35 Map target
+kinds plus 13 Event/Task field-target pairs, each in prior/forward order.
+Logical obligations and implementation test-node counts are distinct:
+one parametrized test may assert several operations, but its receipt
+must enumerate the required assertions it actually exercised.
 
 Migration notes: `docs/scholia/v06.2-to-v07-migration.md`.
 

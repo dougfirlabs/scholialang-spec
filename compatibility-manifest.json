@@ -45,7 +45,7 @@
       "rule": "semantic-atoms.v1 (multi-rule suite; see its rule_codes metadata)",
       "path": "conformance/v0.7/semantic_atoms.json",
       "status": "proposed",
-      "description": "APPENDED for the PROPOSED additive Map/Event/Task candidate (grammar 0.7.0 / package 0.7.3; not ratified, nothing released). Self-describing suite: 106 cases (35 positive / 71 negative) with per-case format, parse-vs-validate failure phase, proposed rule code, required diagnostic subset, and round-trip/canonical-identity expectations, plus declared runtime obligations for implementing consumers. The frozen v0.6 golden records and v0.6.2 suites above are unchanged; append-only."
+      "description": "APPENDED for the PROPOSED additive Map/Event/Task candidate (grammar 0.7.0 / package 0.7.3; not ratified, nothing released). Self-describing suite: 204 cases (36 positive / 168 negative); complete IDs and 38-family mapping in conformance/v0.7/coverage-inventory.json; 11 structured runtime obligations remain pending consumer execution with per-case format, parse-vs-validate failure phase, proposed rule code, required diagnostic subset, and round-trip/canonical-identity expectations, plus declared runtime obligations for implementing consumers. The frozen v0.6 golden records and v0.6.2 suites above are unchanged; append-only."
     }
   ],
   "golden_records": [

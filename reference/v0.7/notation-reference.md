@@ -678,7 +678,7 @@ v0.3.1 schema-reserved hooks — edges, effects, refs, and step-level metadata.
 | Attribute | Type | Required | Notes |
 |---|---|---|---|
 | `id` | string | no | trace-scoped identifier. |
-| `type` | imports | depends | calls | tests | publishes | no | edge kind (Python field: edge_type). |
+| `type` | depends_on | referenced_by | imports | references | no | existing edge kind (Python field: edge_type); no new enum values. |
 | `target` | string | no | target symbol / file / atom id. |
 
 **Example:**
@@ -730,7 +730,7 @@ v0.3.1 schema-reserved hooks — edges, effects, refs, and step-level metadata.
 | Attribute | Type | Required | Notes |
 |---|---|---|---|
 | `id` | string | no | trace-scoped identifier. |
-| `type` | test_owner | doc | spec | no | reference kind (Python field: ref_type). |
+| `type` | test_owner | doc_owner | no | existing reference kind (Python field: ref_type); no new enum values. |
 | `target` | string | no | target id or path. |
 
 **Example:**

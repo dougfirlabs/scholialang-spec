@@ -328,6 +328,29 @@ def test_atoms_index_matches_impl(
     )
 
 
+@pytest.mark.parametrize("kind,field,constant", [
+    ("Edge", "type", "V031_EDGE_TYPES"),
+    ("Ref", "type", "V031_REF_TYPES"),
+    ("Effect", "kind", "V031_EFFECT_KINDS"),
+])
+def test_current_projection_preserves_existing_enum_values(
+    atom_classes: dict[str, type], kind: str, field: str, constant: str
+) -> None:
+    # atom_classes has already enforced the exact explicit source origin.
+    # This is existing-implementation parity, not a simulated new-kind validator.
+    import scholialang.atoms as atoms
+
+    assert kind in atom_classes
+    current = yaml.safe_load(
+        (_spec_repo_root() / "reference/v0.7/atoms_index.yaml").read_text()
+    )
+    row = next(row for row in current["atoms"] if row["kind"] == kind)
+    attr = next(attr for attr in row["attributes"] if attr["name"] == field)
+    assert {value.strip() for value in attr["type"].split("|")} == set(
+        getattr(atoms, constant)
+    )
+
+
 # ── (f) — atoms_to_spec --check passes ──────────────────────────────
 
 

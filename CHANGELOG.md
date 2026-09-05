@@ -28,6 +28,13 @@
   implementation 0.7.2 (`Observation.fingerprint`; `Uncertainty.on` and
   `Confidence.on`, previously loaded as YAML boolean `true` due to an
   unquoted `on` key).
+- Corrects the current projection's stale `Edge.type` and `Ref.type`
+  documentation to match existing implementation enums; preserves the
+  historical projection. Repairs two positive fixtures' undeclared
+  evidence references and expands the static suite to 204 cases (36
+  positive / 168 negative), preserving all original 106 IDs. Adds an
+  exact coverage inventory, all 38 adversarial family mappings and 11
+  structured runtime obligations, explicitly pending consumer execution.
 
 ## v0.6.x — additive `fingerprint=` revision (contract approved)
 

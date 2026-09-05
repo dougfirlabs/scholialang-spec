@@ -189,18 +189,18 @@ def test_current_fields_and_requiredness_are_explicit(
 # Pinned inventory: the suite may grow by an explicit pin update, but
 # discovering fewer fixtures must never shrink the required tests
 # silently (consumer gates parametrize from these numbers).
-EXPECTED_TOTAL = 106
-EXPECTED_POSITIVE = 35
-EXPECTED_NEGATIVE = 71
+EXPECTED_TOTAL = 204
+EXPECTED_POSITIVE = 36
+EXPECTED_NEGATIVE = 168
 EXPECTED_FAMILIES = {
-    "catalog": {"positive": 3, "negative": 7},
-    "map_types": {"positive": 9, "negative": 19},
-    "event_identity": {"positive": 6, "negative": 9},
-    "task_declaration": {"positive": 6, "negative": 6},
+    "catalog": {"positive": 3, "negative": 15},
+    "map_types": {"positive": 10, "negative": 55},
+    "event_identity": {"positive": 6, "negative": 13},
+    "task_declaration": {"positive": 6, "negative": 14},
     "relation_legality": {"positive": 6, "negative": 19},
-    "local_ids": {"positive": 1, "negative": 6},
-    "canonical_ids": {"positive": 3, "negative": 2},
-    "serialization": {"positive": 1, "negative": 3},
+    "local_ids": {"positive": 1, "negative": 15},
+    "canonical_ids": {"positive": 3, "negative": 24},
+    "serialization": {"positive": 1, "negative": 13},
 }
 
 # Load-bearing single cases whose absence would silently drop a
