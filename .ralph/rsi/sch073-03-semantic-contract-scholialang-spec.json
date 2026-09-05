@@ -20,7 +20,7 @@
     "scholialang-spec"
   ],
   "problem": "The 0.7.3 vocabulary is scoped in core issue #22, but semantic kinds, relationships, canonical identity and compatibility need one normative implementation contract.",
-  "outcome": "A pinned 0.7.3 specification and core candidate support first-class Map/Event/Task with deterministic validation and round trips, while retaining the meaning of existing 0.7.2 traces.",
+  "outcome": "An immutable proposed 0.7.3 specification, current35-kind index and self-describing semantic fixture corpus, with all legacy parity preserved. This job proves normative producer integrity only; actual new-core parsing/validation/roundtrip/artifact acceptance is the mandatory subsequent j04 consumer gate. Parent PRD03 remains open until both receipts pass.",
   "key_files": [
     "specification and notation reference",
     "canonical atoms/catalog and public exports",
@@ -44,7 +44,7 @@
   "stories": [
     {
       "id": "SCH073-03-S1",
-      "title": "Ratify concrete semantic schema and fixtures",
+      "title": "Define proposed concrete semantic schema and fixtures for morning review",
       "description": "Produce reference definitions, legal/illegal relations, identity and compatibility matrix, and representative fixtures for Map/Event/Task plus EventRef coexistence.",
       "priority": 1,
       "passes": 0
