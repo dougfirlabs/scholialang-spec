@@ -1,0 +1,87 @@
+{
+  "kind": "prd",
+  "schema_version": 1,
+  "id": "sch073-08-release-candidate-scholialang-spec",
+  "title": "Final normative corpus and reference consistency verification",
+  "status": "draft",
+  "group_id": "scholialang-073-convergence-20260904",
+  "run_policy": "single",
+  "approval": {
+    "approved": false,
+    "execution_authorized": false,
+    "merge_authorized": false,
+    "release_authorized": false
+  },
+  "target_repo": "scholialang-spec",
+  "repositories": [
+    "scholialang-spec"
+  ],
+  "owner": "dfscholiaspec",
+  "source_doc": ".ralph/contracts/sch073-08-release-candidate-parent.json",
+  "problem": "Repository-scoped decomposition of the preserved review packet; this draft must be promoted only after project, ownership, source and dependency checks.",
+  "outcome": "Final normative corpus and reference consistency verification",
+  "hard_constraints": [
+    "Modify only scholialang-spec; all other producer/consumer repositories are read-only inputs or evidence references.",
+    "This is a held preparation draft, outside active discovery. No launch, merge, package publication, deployment or live restart is authorized.",
+    "Use a sanctioned isolated cumulative work branch. Preserve original branches and operator changes; never move the shared checkout HEAD.",
+    "Parent review contract remains authoritative. Resolve any narrowing conflict before launch; this card does not waive parent acceptance.",
+    "Cross-repository receipts are PM-enforced prerequisites, not new RunPlan schema fields and not commit-ancestry checks in another repository.",
+    "Keep proprietary coordination metadata out of public package/spec surfaces. Review and sanitize the promoted repo-local copy.",
+    "Required fixtures and newly required scenarios must run with explicit counts and zero required skips; existing suite green alone is insufficient.",
+    "Program execution is authorized overnight; this draft remains blocked until all required accepted producer receipts exist. No Cloud implementation; its existing maintainer owns propagation.",
+    "Use accepted cumulative same-repository candidate, not original historical base. Never move shared checkout or merge stage/main/master."
+  ],
+  "depends_on_prds": [
+    "sch073-03-semantic-contract-scholialang-spec"
+  ],
+  "coordination_metadata": {
+    "job_id": "sch073-j12",
+    "parent_prd": "sch073-08-release-candidate",
+    "source_branch": "master",
+    "source_sha_snapshot": "9c530ed71d19b0c407503b367472a4f8e7b8e151",
+    "proposed_gui_port": 7708,
+    "owner_status": "proposed_not_created",
+    "requires_receipts": [
+      "sch073-j11"
+    ],
+    "receipt_enforcement": "manual_pm_gate_not_engine",
+    "installed": false,
+    "launch_ready": false
+  },
+  "stories": [
+    {
+      "id": "sch073-j12-S1",
+      "title": "Final normative corpus and reference consistency verification",
+      "description": "Implement only the repository-local portion. Final normative corpus/reference consistency, compatibility and public hygiene; hash accepted spec corpus.",
+      "passes": false,
+      "acceptance_criteria": [
+        "Final normative corpus/reference consistency, compatibility and public hygiene; hash accepted spec corpus."
+      ]
+    },
+    {
+      "id": "sch073-j12-S2",
+      "title": "Independent exact-candidate verification",
+      "description": "Run baseline plus new positive/adversarial scenarios from a clean export or installed artifact; record full SHA, counts, hashes, scope and preserved behavior.",
+      "passes": false,
+      "acceptance_criteria": [
+        "All required baseline and new contract cases run and pass; an independent review binds the exact candidate and required producer receipts."
+      ]
+    }
+  ],
+  "acceptance_criteria": [
+    "Final normative corpus/reference consistency, compatibility and public hygiene; hash accepted spec corpus.",
+    "All parent criteria applicable to this repository are verified; cross-repo criteria remain explicit pending receipts, never silently dropped."
+  ],
+  "test_plan": [
+    "python -m pytest tests -q",
+    "Preserve local fingerprint work branch 2dfdce1740a3984de500861f65e2be6f957dece6; review its diff against the fresh base before integration.",
+    "Commands are baseline gates, not claimed executed for this future candidate. New capability tests must be created and listed with exact node IDs before acceptance."
+  ],
+  "success_metrics": [
+    "Independent exact-tip acceptance and preserved behavior matrix; no required skip or source import leakage."
+  ],
+  "notes": [
+    "Proposed lane/owner and source snapshot are planning metadata, not active configuration. Recheck freshness and model attestation immediately before launch."
+  ],
+  "target_root": "/home/horselover/projects/opentalon-worktrees/ot-rsi-sch073-night-20260905-spec-control"
+}
