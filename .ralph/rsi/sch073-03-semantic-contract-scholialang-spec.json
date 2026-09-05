@@ -1,7 +1,7 @@
 {
   "kind": "prd",
   "schema_version": 1,
-  "status": "approved",
+  "status": "completed",
   "group_id": "scholialang-073-convergence-20260904",
   "run_policy": "gated_stack",
   "approval": {
@@ -94,5 +94,121 @@
     "proposal_private_audit_sha256": "a086e695a9bbc79b7d53a278e9e07266e80a3fb7c2ef34ec1c2437bdbe79d1d8",
     "proposal_repo_local_sha256": "2d3dd43979edad1b795e0e0aa02c3e9466255d11cfc0f55ebd1a68942d91878d",
     "acceptance_plan_sha256": "201b823d43d3e4c5d33888bd239dc344ca18ed19cd815ec57b34fb1ce94dad1b"
-  }
+  },
+  "lifecycle": {
+    "run_status": "completed",
+    "last_successful_run_id": "a763e6b584344c2895b3355702bdeb3d",
+    "last_successful_branch": "feat/sch073-spec-control-20260905",
+    "last_successful_commit": "6589df12f889313d2cd3164cb04cb2bf2cb2605c",
+    "completed_at": "2026-09-05T09:57:39+00:00",
+    "completion_evidence": {
+      "task": "sch073-03-semantic-contract-scholialang-spec",
+      "prd_id": "sch073-03-semantic-contract-scholialang-spec",
+      "provider": "claude",
+      "model": "claude-fable-5",
+      "post_path": "/home/horselover/projects/opentalon-worktrees/ot-rsi-sch073-night-20260905-spec-control/.opentalon/kb/posts/2026_09_05_POST_sx4zqe35np_define_pro.md",
+      "post_status": "present",
+      "test_gate": {
+        "all_passed": true,
+        "commands": [],
+        "run_id": "a763e6b584344c2895b3355702bdeb3d",
+        "skipped": true,
+        "skipped_reason": "no machine-runnable commands in success_metrics"
+      }
+    }
+  },
+  "completion": {
+    "run_id": "a763e6b584344c2895b3355702bdeb3d",
+    "task": "sch073-03-semantic-contract-scholialang-spec",
+    "completed_at": "2026-09-05T09:57:39+00:00",
+    "branch": "feat/sch073-spec-control-20260905",
+    "commit": "6589df12f889313d2cd3164cb04cb2bf2cb2605c",
+    "final_status": "success",
+    "previous_status": "approved",
+    "lifecycle": {
+      "run_status": "completed",
+      "last_successful_run_id": "a763e6b584344c2895b3355702bdeb3d",
+      "last_successful_branch": "feat/sch073-spec-control-20260905",
+      "last_successful_commit": "6589df12f889313d2cd3164cb04cb2bf2cb2605c",
+      "completed_at": "2026-09-05T09:57:39+00:00",
+      "completion_evidence": {
+        "task": "sch073-03-semantic-contract-scholialang-spec",
+        "prd_id": "sch073-03-semantic-contract-scholialang-spec",
+        "provider": "claude",
+        "model": "claude-fable-5",
+        "post_path": "/home/horselover/projects/opentalon-worktrees/ot-rsi-sch073-night-20260905-spec-control/.opentalon/kb/posts/2026_09_05_POST_sx4zqe35np_define_pro.md",
+        "post_status": "present",
+        "test_gate": {
+          "all_passed": true,
+          "commands": [],
+          "run_id": "a763e6b584344c2895b3355702bdeb3d",
+          "skipped": true,
+          "skipped_reason": "no machine-runnable commands in success_metrics"
+        }
+      }
+    },
+    "completion_evidence": {
+      "task": "sch073-03-semantic-contract-scholialang-spec",
+      "prd_id": "sch073-03-semantic-contract-scholialang-spec",
+      "provider": "claude",
+      "model": "claude-fable-5",
+      "post_path": "/home/horselover/projects/opentalon-worktrees/ot-rsi-sch073-night-20260905-spec-control/.opentalon/kb/posts/2026_09_05_POST_sx4zqe35np_define_pro.md",
+      "post_status": "present",
+      "test_gate": {
+        "all_passed": true,
+        "commands": [],
+        "run_id": "a763e6b584344c2895b3355702bdeb3d",
+        "skipped": true,
+        "skipped_reason": "no machine-runnable commands in success_metrics"
+      }
+    }
+  },
+  "completion_history": [
+    {
+      "run_id": "a763e6b584344c2895b3355702bdeb3d",
+      "task": "sch073-03-semantic-contract-scholialang-spec",
+      "completed_at": "2026-09-05T09:57:39+00:00",
+      "branch": "feat/sch073-spec-control-20260905",
+      "commit": "6589df12f889313d2cd3164cb04cb2bf2cb2605c",
+      "final_status": "success",
+      "previous_status": "approved",
+      "lifecycle": {
+        "run_status": "completed",
+        "last_successful_run_id": "a763e6b584344c2895b3355702bdeb3d",
+        "last_successful_branch": "feat/sch073-spec-control-20260905",
+        "last_successful_commit": "6589df12f889313d2cd3164cb04cb2bf2cb2605c",
+        "completed_at": "2026-09-05T09:57:39+00:00",
+        "completion_evidence": {
+          "task": "sch073-03-semantic-contract-scholialang-spec",
+          "prd_id": "sch073-03-semantic-contract-scholialang-spec",
+          "provider": "claude",
+          "model": "claude-fable-5",
+          "post_path": "/home/horselover/projects/opentalon-worktrees/ot-rsi-sch073-night-20260905-spec-control/.opentalon/kb/posts/2026_09_05_POST_sx4zqe35np_define_pro.md",
+          "post_status": "present",
+          "test_gate": {
+            "all_passed": true,
+            "commands": [],
+            "run_id": "a763e6b584344c2895b3355702bdeb3d",
+            "skipped": true,
+            "skipped_reason": "no machine-runnable commands in success_metrics"
+          }
+        }
+      },
+      "completion_evidence": {
+        "task": "sch073-03-semantic-contract-scholialang-spec",
+        "prd_id": "sch073-03-semantic-contract-scholialang-spec",
+        "provider": "claude",
+        "model": "claude-fable-5",
+        "post_path": "/home/horselover/projects/opentalon-worktrees/ot-rsi-sch073-night-20260905-spec-control/.opentalon/kb/posts/2026_09_05_POST_sx4zqe35np_define_pro.md",
+        "post_status": "present",
+        "test_gate": {
+          "all_passed": true,
+          "commands": [],
+          "run_id": "a763e6b584344c2895b3355702bdeb3d",
+          "skipped": true,
+          "skipped_reason": "no machine-runnable commands in success_metrics"
+        }
+      }
+    }
+  ]
 }
