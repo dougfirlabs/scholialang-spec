@@ -1,5 +1,15 @@
 # Changelog
 
+## Package 0.7.2 alignment (grammar remains v0.6.2)
+
+- Refresh root, example, and fixture READMEs to distinguish the current 0.7.2
+  implementation release from the stable v0.6.2 grammar. Preserve historical
+  feature-introduction versions and frozen compatibility records.
+- Correct the constraint suite metadata to name validator 0.7.2, which ships
+  the article and token-boundary fixes, and update its integrity assertion.
+- Fix the documented registry example to use the current `walk_dag` API.
+- Remove the obsolete evaluation-summary link.
+
 ## v0.6.x — additive `fingerprint=` revision (contract approved)
 
 - **Adds** the additive `fingerprint=` attribute on location-bearing

@@ -1,6 +1,6 @@
 """Fingerprint fixture-corpus test — exercises the executable NOTATION layer.
 
-Covers the proposed additive ``fingerprint=`` attribute
+Covers the approved additive ``fingerprint=`` attribute
 (``docs/scholia/FINGERPRINT.md``) at the layer this repo can execute today
 (no source access, no 52X-B2 digest):
 
@@ -13,8 +13,8 @@ Covers the proposed additive ``fingerprint=`` attribute
      carries ``location=`` (spec §3.3).
   d) ignore-if-absent / non-load-bearing: stripping every ``fingerprint=``
      attribute yields a trace that PARSES and VALIDATES CLEAN under the
-     PUBLISHED scholialang v0.6 validator — the older-validator-tolerance
-     guarantee (spec §4.1). This holds for the negatives too, because their
+     scholialang 0.7.2 reference validator (spec §4.1). This checks the
+     stripped representation, not execution with a historical validator. This holds for the negatives too, because their
      only defect lives in the fingerprint layer.
 
 The consumer-layer verdicts (verifies / rebinds / span_mismatch / stale) are

@@ -10,7 +10,9 @@ machine-readable index is [`manifest.yaml`](manifest.yaml).
 
 > **Status:** APPROVED and MERGED. The contract is part of the canonical
 > spec as an additive substrate revision; the reference validator ships the
-> `fingerprint_well_formed` rule as of `scholialang` 0.7.1.
+> `fingerprint_well_formed` rule since `scholialang` 0.7.1. The current
+> reference implementation and MCP/plugin release are **0.7.2**, implementing
+> the stable **v0.6.2** grammar plus this additive contract.
 
 ## Layout
 
@@ -65,8 +67,9 @@ constraint: one definition, not redefined). So:
 `ignore_if_absent.xml` is the tolerance demonstrator. `fingerprint` is
 **non-load-bearing**: no atom REFERs it, so stripping every `fingerprint`
 attribute is lossless. The test strips them and asserts the result parses
-and validates clean under the **published** `scholialang` v0.6 validator —
-proving the attribute can be dropped by a pre-revision consumer without
-invalidating the trace. Note the boundary (spec §4.1): a strict-closed-set
+and validates clean under the **0.7.2** reference validator. This checks
+that stripping the attribute preserves a valid trace; it does not itself run
+a historical validator. Older consumers can read the stripped form without
+learning the additive field. Note the boundary (spec §4.1): a strict-closed-set
 parser must be *taught* the attribute to accept it **in place**, exactly as
 it had to be taught `canonical_id`.

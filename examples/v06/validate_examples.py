@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Validate the examples/v06 corpus against the published scholialang v0.6.
+"""Validate the examples/v06 corpus against the scholialang 0.7.2 (stable v0.6.2 grammar).
 
-Run from anywhere with the published ``scholialang`` v0.6 importable
+Run from anywhere with the ``scholialang`` 0.7.2 importable
 (``pip install -e <scholialang>``):
 
     python examples/v06/validate_examples.py
 
 What it does:
   1. Parses + validates every ``examples/v06/*.xml`` trace with the
-     published v0.6 validator; asserts ``ok`` (no errors) and reports
+     0.7.2 reference validator; asserts ``ok`` (no errors) and reports
      warnings (there should be none).
   2. Demonstrates the genuine cross-session REFER:canonical_id path: it
      loads ``registry_dag_chain.xml``, ``put``s the atoms into a temporary
      DAG registry, and resolves a ``REFER:sha256:<cid>`` from a synthetic
      session-N+1 atom via the 4-path ``resolve_refer`` resolver (registry
-     path). It also walks the registry DAG (ancestors / walk_chain).
+     path). It also walks the registry DAG (ancestors / walk_dag).
   3. Renders the 3 CORE prelude modes (hash_only / hash_list / inline)
      over the prior atoms and writes them to ``prelude_<mode>.txt``.
 
@@ -69,7 +69,7 @@ def demo_registry_and_prelude() -> bool:
     prior_atoms = list(_walk([a for st in steps for a in st.atoms]))
 
     tmp = tempfile.mkdtemp(prefix="scholia-v06-examples-")
-    registry = Registry(Path(tmp) / "registry.proofchain.json")
+    registry = Registry(Path(tmp) / "registry.verification_dag.json")
     for atom in prior_atoms:
         registry.put(atom)
 
@@ -105,9 +105,9 @@ def demo_registry_and_prelude() -> bool:
     # DAG: the new Concluding C_99 should have F_01 as a premise (ancestor).
     ancestors = list(registry.ancestors(c99.canonical_id))
     anc_kinds = sorted({r.get("kind") for r in ancestors})
-    chain = registry.walk_chain(c99.canonical_id)
+    chain = registry.walk_dag(c99.canonical_id)
     print(f"DAG: C_99 ancestors={anc_kinds}; "
-          f"walk_chain nodes={len(chain.nodes)} edges={len(chain.edges)} "
+          f"walk_dag nodes={len(chain.nodes)} edges={len(chain.edges)} "
           f"complete={chain.is_complete}")
 
     # Render the 3 CORE prelude modes over the prior atoms.
