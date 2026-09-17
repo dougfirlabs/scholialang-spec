@@ -27,7 +27,7 @@ def test_constraint_suite_identity_and_coverage() -> None:
     suite = _suite()
     assert suite["schema_version"] == "1.0"
     assert suite["spec_version"] == "0.6.2"
-    assert suite["validator_version"] == "0.7.1"
+    assert suite["validator_version"] == "0.7.2"
     assert suite["rule"] == "constraint_respected"
     cases = suite["cases"]
     assert {case["id"] for case in cases} == _EXPECTED_CASE_IDS

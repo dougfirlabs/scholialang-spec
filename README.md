@@ -13,7 +13,9 @@
 # scholialang-spec
 
 This repository contains the Scholia language specification and
-conformance examples.
+conformance examples for **scholialang and scholialang-mcp 0.7.2**.
+The stable language grammar remains **Scholia v0.6.2**, with the approved
+additive `fingerprint=` contract.
 
 Scholia is a structured reasoning notation for agent traces. It is
 designed to make reasoning artifacts readable, diffable, validateable,
@@ -25,18 +27,23 @@ closed vocabulary plus a content-addressed substrate: optional
 `canonical_id` hashes, a canonical-id-keyed DAG registry, and the three core
 lazy-prelude modes `hash_only`, `hash_list`, and `inline`.
 
-## Current v0.6 Scope
+## Current scope: package 0.7.2, grammar v0.6.2
 
 `scholialang-spec` is the canonical home for the v0.6 language contract:
 the additive `canonical_id` substrate, canonical-id-keyed registry semantics,
 canonical-id-aware `REFER` resolution, migration notes from v0.5, and the
-three finalized lazy-prelude modes. Implementation packages and host tooling
-should point readers here for normative v0.6 behavior.
+three finalized lazy-prelude modes, optional goal-outcome status, linked
+Action-result closure, and the approved fingerprint contract. Package 0.7.2
+adds corrected constraint phrase and token-boundary matching without changing
+the grammar version.
 
 ## Contents
 
 - `docs/scholia/SCHOLIA_v0.6_SPEC.md` - canonical Scholia v0.6 spec
   (canonical_id substrate, DAG registry, 3-mode lazy prelude)
+- `docs/scholia/FINGERPRINT.md` - approved additive fingerprint contract,
+  implemented since package 0.7.1 and included in 0.7.2
+- `tests/fixtures/fingerprint/` - shared notation and consumer-intent fixtures
 - `docs/scholia/SCHOLIA_v0.5_SPEC.md` - superseded v0.5 spec (archived,
   preserved with a banner)
 - `docs/scholia/v05-to-v06-migration.md` - migration notes for emitters,
@@ -49,7 +56,7 @@ should point readers here for normative v0.6 behavior.
 - `examples/v06/` - v0.6 fixture traces (canonical_id, REFER:sha256, the
   3 core prelude modes)
 - `conformance/v0.6.2/` - shared positive/negative validator fixtures
-  for point-release semantic contracts
+  for Action-result closure and the package 0.7.2 constraint fix
 - `examples/` - fixture traces used by reference implementations
 
 ## Related Repositories
@@ -65,7 +72,6 @@ should point readers here for normative v0.6 behavior.
 
 - Public spec: https://scholialang.org/spec
 - Launch article: https://scholialang.org/why-reasoning-needs-a-protocol-layer
-- Eval summary: https://scholialang.org/eval-summary
 - Playground: https://scholialang.org/playground
 
 ## Version
@@ -74,10 +80,16 @@ Current language version: `v0.6.2`.
 
 This is the **language grammar version**, not the version of every package
 that implements it. The current Python reference implementation and MCP/plugin
-release are `0.7.1`; those packages implement the stable Scholia `v0.6.2`
+release are `0.7.2`; those packages implement the stable Scholia `v0.6.2`
 grammar plus approved additive validator/tooling revisions. Seeing `v0.6` in
 the spec is therefore expected. Public package and plugin metadata should name
 both axes explicitly instead of describing a package release as “v0.6.”
+
+Package **0.7.2** fixes `constraint_respected` so articles such as the `a` in
+“Never a bare null” and substrings such as `delete` in `undeleted` do not become
+false violations. The [shared constraint suite](conformance/v0.6.2/constraint_respected.json)
+covers those boundaries, forward-only scope, and the `Never`, `must not`, and
+`do not` forms. The fixture directory retains the grammar version in its name.
 
 v0.6.2 corrects `action_recorded` so explicitly linked results may
 appear in later Steps while unrelated or order-only later Findings

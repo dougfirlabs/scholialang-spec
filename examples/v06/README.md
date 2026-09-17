@@ -2,8 +2,9 @@
 
 A small corpus exercising the v0.6 content-addressable substrate. Every
 `.xml` trace **validates clean** (no errors, no warnings) under the
-published `scholialang` v0.6 validator. Reusable by the website gallery
-(PRD-06).
+published `scholialang` **0.7.2** validator. The directory names the original
+v0.6 substrate; the current stable grammar is **v0.6.2**. The examples are
+reusable by the website gallery.
 
 Validator point-release contracts, including the v0.6.2
 `action_recorded` positive/negative suite, live separately under
@@ -35,16 +36,17 @@ The two experimental quality-recovery arms are **NOT** v0.6 core (spec
 
 ## Validate / regenerate
 
-With the published `scholialang` v0.6 importable
-(`pip install -e <scholialang>`):
+Use Python 3.11 or newer with the current reference implementation. From the
+repository root:
 
-```
+```sh
+python -m pip install 'scholialang==0.7.2'
 python examples/v06/validate_examples.py
 ```
 
 This validates every trace, demonstrates the genuine cross-session
 `REFER:sha256` resolution via the DAG registry (`resolve_refer` registry
-path + `ancestors` / `walk_chain`), and regenerates the `prelude_*.txt`
+path + `ancestors` / `walk_dag`), and regenerates the `prelude_*.txt`
 samples. Exit code 0 iff everything passes. Deterministic; no LLM calls.
 
 ## A note on cross-session reuse vs. `validate()`
